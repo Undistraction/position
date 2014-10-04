@@ -123,7 +123,7 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 }
 
 @function pos-is-keyword($value) {
-  @return index($pos-keywords, $value) != null;
+  @return not not index($pos-keywords, $value);
 }
 
 @function pos-parse-offsets-for-always-valueless($offsets, $item) {
