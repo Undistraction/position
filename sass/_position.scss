@@ -70,7 +70,7 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
           $skip: true;
           $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
         } @else {
-          @error "`#{$item}` should be followed by a value, yet it was `#{$next-item}`.";
+          @error "`#{$item}` should be followed by a valid value, yet it was `#{$next-item}`.";
         }
 
       } @else if index($pos-support-valueless, $item) {
