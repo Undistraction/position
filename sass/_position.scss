@@ -18,7 +18,7 @@
 // -------------------------------------------------------------------------------------------------
 
 $pos-always-valueless: "fill" "fill-h" "fill-v";
-$pos-always-value: "offset" "offset-h" "offset-v";
+$pos-always-value: "offset" "offset-h" "offset-v" "all";
 $pos-support-valueless: "left" "right" "top" "bottom";
 $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
 $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
@@ -148,14 +148,14 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
 
-  @if $item == "offset-h" or $item == "offset" {
+  @if $item == "offset-h" or $item == "offset" or $item == "all" {
     $offsets: map-merge($offsets, (
       "left": $value,
       "right": $value
     ));
   }
 
-  @if $item == "offset-v" or $item == "offset" {
+  @if $item == "offset-v" or $item == "offset" or $item == "all" {
     $offsets: map-merge($offsets, (
       "top": $value,
       "bottom": $value
