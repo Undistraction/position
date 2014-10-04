@@ -49,7 +49,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
       $index: index($args, $item);
       $is-last-item: $index == length($args);
       $next-item: null;
-      
+
       @if not $is-last-item {
         $next-item: nth($args, $index + 1);
       }
@@ -61,7 +61,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
         } @else {
           @error "`#{$item}` cannot be followed by a value, yet one has been found: `#{$next-item}`.";
         }
-        
+
       // Ensure there is a following value and that it is not unitless
       } @else if index($pos-always-value, $item) {
         // Do we have a united next item?
@@ -71,20 +71,20 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
         } @else {
           @error "`#{$item}` should be followed by a value, yet it was `#{$next-item}`.";
         }
-        
+
       } @else if index($pos-support-valueless, $item) {
         // Is the next item is a valid value?
         $value: null;
-        
+
         @if not $is-last-item and pos-is-valid-value($next-item) {
           $skip: true;
           $value: $next-item;
-          
+
         // Otherwise treat as having a value of zero
         } @else {
           $value: 0;
         }
-        
+
         $offsets: pos-parse-offsets-for-support-value($offsets, $item, $value);
       } @else {
         @error "`#{$item}` is not a valid keyword.";
@@ -95,7 +95,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
       $skip: false;
     }
   }
-  
+
   @include pos-render($position, $offsets);
 }
 
@@ -121,6 +121,10 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
        or (index($pos-valid-unitless-values, $value));
 }
 
+@function pos-is-keyword($value) {
+  @return index($pos-keywords, $value) != null;
+}
+
 @function pos-parse-offsets-for-always-valueless($offsets, $item) {
   // Horizontal Fill
   @if $item == "fill-h" or $item == "fill"  {
@@ -133,7 +137,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
     $offsets: map-merge($offsets, ("top": 0));
     $offsets: map-merge($offsets, ("bottom": 0));
   }
-  
+
   @return $offsets;
 }
 
@@ -147,7 +151,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
     $offsets: map-merge($offsets, ("top": $value));
     $offsets: map-merge($offsets, ("bottom": $value));
   }
-   
+
    @return $offsets;
 }
 
@@ -158,7 +162,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
 @mixin pos-render($position, $offsets) {
   // Render position
   position: $position;
-  
+
   // Render offsets
   @each $offset, $offset-value in $offsets {
     @if $offset-value {
