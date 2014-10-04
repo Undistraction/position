@@ -59,7 +59,7 @@ $pos-valid-unitless-values: auto initial inherit 0;
         @if $is-last-item or pos-is-keyword($next-item) {
           $offsets: pos-parse-offsets-for-always-valueless($offsets, $item);
         } @else {
-          @error "'#{$item}' doesn't support a value, but value present: '#{$next-item}'";
+          @error "`#{$item}` cannot be followed by a value, yet one has been found: `#{$next-item}`.";
         }
         
       // Ensure there is a following value and that it is not unitless
@@ -69,7 +69,7 @@ $pos-valid-unitless-values: auto initial inherit 0;
           $skip: true;
           $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
         } @else {
-          @error "#{$item} must have an valid value, but it was '#{$next-item}'";
+          @error "`#{$item}` should be followed by a value, yet it was `#{$next-item}`.";
         }
         
       } @else if index($pos-support-valueless, $item) {
@@ -87,7 +87,7 @@ $pos-valid-unitless-values: auto initial inherit 0;
         
         $offsets: pos-parse-offsets-for-support-value($offsets, $item, $value);
       } @else {
-        @error "'#{$item}' is not a supported keyword";
+        @error "`#{$item}` is not a valid keyword.";
       }
 
     } @else {
