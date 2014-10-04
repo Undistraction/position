@@ -49,36 +49,42 @@ $pos-valid-unitless-values: auto initial inherit 0;
       $index: index($args, $item);
       $is-last-item: $index == length($args);
       $next-item: null;
-      @if $is-last-item == false {
-        $next-item: nth($args, $index+1);
+      
+      @if not $is-last-item {
+        $next-item: nth($args, $index + 1);
       }
 
       // Handle keyword that doesn't accept a value
       @if index($pos-always-valueless, $item) {
-        @if $is-last-item or pos-is-keyword($next-item){
-          $offsets: pos-parse-offsets-for-always-valueless($offsets, $item)
-        }@else{
+        @if $is-last-item or pos-is-keyword($next-item) {
+          $offsets: pos-parse-offsets-for-always-valueless($offsets, $item);
+        } @else {
           @error "'#{$item}' doesn't support a value, but value present: '#{$next-item}'";
         }
+        
       // Ensure there is a following value and that it is not unitless
       } @else if index($pos-always-value, $item) {
         // Do we have a united next item?
-        @if $is-last-item == false and pos-is-valid-value($next-item) {
+        @if not $is-last-item and pos-is-valid-value($next-item) {
           $skip: true;
           $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
         } @else {
           @error "#{$item} must have an valid value, but it was '#{$next-item}'";
         }
+        
       } @else if index($pos-support-valueless, $item) {
         // Is the next item is a valid value?
         $value: null;
-        @if $is-last-item == false and pos-is-valid-value($next-item) {
+        
+        @if not $is-last-item and pos-is-valid-value($next-item) {
           $skip: true;
           $value: $next-item;
+          
         // Otherwise treat as having a value of zero
-        }@else{
+        } @else {
           $value: 0;
         }
+        
         $offsets: pos-parse-offsets-for-support-value($offsets, $item, $value);
       } @else {
         @error "'#{$item}' is not a supported keyword";
@@ -89,6 +95,7 @@ $pos-valid-unitless-values: auto initial inherit 0;
       $skip: false;
     }
   }
+  
   @include pos-render($position, $offsets);
 }
 
@@ -122,36 +129,39 @@ $pos-valid-unitless-values: auto initial inherit 0;
   }
 
   // Vertical Fill
-  @if $item == fill-v or $item == fill{
+  @if $item == fill-v or $item == fill {
     $offsets: map-merge($offsets, (top: 0));
     $offsets: map-merge($offsets, (bottom: 0));
   }
+  
   @return $offsets;
 }
 
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
-  @if $item == offset-h or $item == offset{
+  @if $item == offset-h or $item == offset {
       $offsets: map-merge($offsets, (left: $value));
       $offsets: map-merge($offsets, (right: $value));
    }
 
-   @if $item == offset-v or $item == offset{
+   @if $item == offset-v or $item == offset {
       $offsets: map-merge($offsets, (top: $value));
       $offsets: map-merge($offsets, (bottom: $value));
    }
+   
    @return $offsets;
 }
 
-@function pos-parse-offsets-for-support-value($offsets, $item, $value){
+@function pos-parse-offsets-for-support-value($offsets, $item, $value) {
   @return map-merge($offsets, ($item: $value));
 }
 
 @mixin pos-render($position, $offsets) {
   // Render position
   position: $position;
+  
   // Render offsets
   @each $offset, $offset-value in $offsets {
-    @if($offset-value){
+    @if($offset-value) {
       #{$offset}: #{$offset-value};
     }
   }
