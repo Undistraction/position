@@ -17,10 +17,10 @@
 // Based on [code](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/) from Hugo Giraudel
 // -------------------------------------------------------------------------------------------------
 
-$pos-always-valueless: fill fill-h fill-v;
-$pos-always-value: offset offset-h offset-v;
-$pos-support-valueless: left right top bottom;
-$pos-valid-unitless-values: auto initial inherit 0;
+$pos-always-valueless: "fill" "fill-h" "fill-v";
+$pos-always-value: "offset" "offset-h" "offset-v";
+$pos-support-valueless: "left" "right" "top" "bottom";
+$pos-valid-unitless-values: "auto" "initial" "inherit" 0;
 
 // API
 // -------------------------------------------------------------------------------------------------
@@ -30,10 +30,10 @@ $pos-valid-unitless-values: auto initial inherit 0;
   // Offsets acts as our model. We use the args to adjust its
   // values and untimately use it to render.
   $offsets: (
-    top: null,
-    right: null,
-    bottom: null,
-    left: null
+    "top": null,
+    "right": null,
+    "bottom": null,
+    "left": null
   );
 
   // If a keyword accepted a value and it was present $skip will be set to true so
@@ -121,32 +121,32 @@ $pos-valid-unitless-values: auto initial inherit 0;
        or (index($pos-valid-unitless-values, $value));
 }
 
-@function pos-parse-offsets-for-always-valueless($offsets, $item){
+@function pos-parse-offsets-for-always-valueless($offsets, $item) {
   // Horizontal Fill
-  @if $item == fill-h or $item == fill  {
-    $offsets: map-merge($offsets, (left: 0));
-    $offsets: map-merge($offsets, (right: 0));
+  @if $item == "fill-h" or $item == "fill"  {
+    $offsets: map-merge($offsets, ("left": 0));
+    $offsets: map-merge($offsets, ("right": 0));
   }
 
   // Vertical Fill
-  @if $item == fill-v or $item == fill {
-    $offsets: map-merge($offsets, (top: 0));
-    $offsets: map-merge($offsets, (bottom: 0));
+  @if $item == "fill-v" or $item == "fill" {
+    $offsets: map-merge($offsets, ("top": 0));
+    $offsets: map-merge($offsets, ("bottom": 0));
   }
   
   @return $offsets;
 }
 
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
-  @if $item == offset-h or $item == offset {
-      $offsets: map-merge($offsets, (left: $value));
-      $offsets: map-merge($offsets, (right: $value));
-   }
+  @if $item == "offset-h" or $item == "offset" {
+    $offsets: map-merge($offsets, ("left": $value));
+    $offsets: map-merge($offsets, ("right": $value));
+  }
 
-   @if $item == offset-v or $item == offset {
-      $offsets: map-merge($offsets, (top: $value));
-      $offsets: map-merge($offsets, (bottom: $value));
-   }
+  @if $item == "offset-v" or $item == "offset" {
+    $offsets: map-merge($offsets, ("top": $value));
+    $offsets: map-merge($offsets, ("bottom": $value));
+  }
    
    @return $offsets;
 }
