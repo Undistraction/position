@@ -21,6 +21,7 @@ $pos-always-valueless: "fill" "fill-h" "fill-v";
 $pos-always-value: "offset" "offset-h" "offset-v";
 $pos-support-valueless: "left" "right" "top" "bottom";
 $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
+$pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
 
 // API
 // -------------------------------------------------------------------------------------------------
@@ -85,7 +86,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
           $value: 0;
         }
 
-        $offsets: pos-parse-offsets-for-support-value($offsets, $item, $value);
+        $offsets: map-merge($offsets, ($item: $value));
       } @else {
         @error "`#{$item}` is not a valid keyword.";
       }
@@ -153,10 +154,6 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
   }
 
    @return $offsets;
-}
-
-@function pos-parse-offsets-for-support-value($offsets, $item, $value) {
-  @return map-merge($offsets, ($item: $value));
 }
 
 @mixin pos-render($position, $offsets) {
