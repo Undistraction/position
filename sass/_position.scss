@@ -1,0 +1,158 @@
+// Offset positioning helpers
+//
+// These mixins support:
+// 1. Setting values for 'top | bottom | left | right'
+// 2. Using 'top | bottom | left | right' keywords without value will set
+//    that offset to zero.
+// 3. Using the keyword 'fill' will set all offsets to zero.
+// 4. Using the keyword 'fill-h' will set left and right offsets to zero.
+// 5. Using the keyword 'fill-v' will set top and bottom offsets to zero.
+// 6. Using the keyword 'offset' with a value will set all offsets to that
+//    value.
+// 7. Using the keyword 'offset-h' with a value will set both left and
+//    right offsets to that value.
+// 8. Using the keyword 'offset-v' with a value will set both top and bottom
+//    offsets to that value.
+//
+// Based on [code](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/) from Hugo Giraudel
+// -------------------------------------------------------------------------------------------------
+
+$pos-always-valueless: fill fill-h fill-v;
+$pos-always-value: offset offset-h offset-v;
+$pos-support-valueless: left right top bottom;
+$pos-valid-unitless-values: auto initial inherit 0;
+
+// API
+// -------------------------------------------------------------------------------------------------
+
+@mixin position($position, $args: ()) {
+
+  // Offsets acts as our model. We use the args to adjust its
+  // values and untimately use it to render.
+  $offsets: (
+    top: null,
+    right: null,
+    bottom: null,
+    left: null
+  );
+
+  // If a keyword accepted a value and it was present $skip will be set to true so
+  // that we don't parse that value as a keyword and skip on to the next item
+  $skip: false;
+
+  // Run through each item, checking its validity and setting any offsets it
+  // effects.
+  @each $item in $args {
+
+    @if $skip == false {
+      // Setup for this iteration
+      $index: index($args, $item);
+      $is-last-item: $index == length($args);
+      $next-item: null;
+      @if $is-last-item == false {
+        $next-item: nth($args, $index+1);
+      }
+
+      // Handle keyword that doesn't accept a value
+      @if index($pos-always-valueless, $item) {
+        @if $is-last-item or pos-is-keyword($next-item){
+          $offsets: pos-parse-offsets-for-always-valueless($offsets, $item)
+        }@else{
+          @error "'#{$item}' doesn't support a value, but value present: '#{$next-item}'";
+        }
+      // Ensure there is a following value and that it is not unitless
+      } @else if index($pos-always-value, $item) {
+        // Do we have a united next item?
+        @if $is-last-item == false and pos-is-valid-value($next-item) {
+          $skip: true;
+          $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
+        } @else {
+          @error "#{$item} must have an valid value, but it was '#{$next-item}'";
+        }
+      } @else if index($pos-support-valueless, $item) {
+        // Is the next item is a valid value?
+        $value: null;
+        @if $is-last-item == false and pos-is-valid-value($next-item) {
+          $skip: true;
+          $value: $next-item;
+        // Otherwise treat as having a value of zero
+        }@else{
+          $value: 0;
+        }
+        $offsets: pos-parse-offsets-for-support-value($offsets, $item, $value);
+      } @else {
+        @error "'#{$item}' is not a supported keyword";
+      }
+
+    } @else {
+      // We skipped this item, so reset for next iteration
+      $skip: false;
+    }
+  }
+  @include pos-render($position, $offsets);
+}
+
+// Shorthand
+
+@mixin position-absolute($args: ()) {
+  @include position(absolute, $args);
+}
+
+@mixin position-fixed($args: ()) {
+  @include position(fixed, $args);
+}
+
+@mixin position-relative($args: ()) {
+  @include position(relative, $args);
+}
+
+// Private
+// -------------------------------------------------------------------------------------------------
+
+@function pos-is-valid-value($value) {
+  @return (type-of($value) == "number" and not unitless($value))
+       or (index($pos-valid-unitless-values, $value));
+}
+
+@function pos-parse-offsets-for-always-valueless($offsets, $item){
+  // Horizontal Fill
+  @if $item == fill-h or $item == fill  {
+    $offsets: map-merge($offsets, (left: 0));
+    $offsets: map-merge($offsets, (right: 0));
+  }
+
+  // Vertical Fill
+  @if $item == fill-v or $item == fill{
+    $offsets: map-merge($offsets, (top: 0));
+    $offsets: map-merge($offsets, (bottom: 0));
+  }
+  @return $offsets;
+}
+
+@function pos-parse-offsets-for-always-value($offsets, $item, $value) {
+  @if $item == offset-h or $item == offset{
+      $offsets: map-merge($offsets, (left: $value));
+      $offsets: map-merge($offsets, (right: $value));
+   }
+
+   @if $item == offset-v or $item == offset{
+      $offsets: map-merge($offsets, (top: $value));
+      $offsets: map-merge($offsets, (bottom: $value));
+   }
+   @return $offsets;
+}
+
+@function pos-parse-offsets-for-support-value($offsets, $item, $value){
+  @return map-merge($offsets, ($item: $value));
+}
+
+@mixin pos-render($position, $offsets) {
+  // Render position
+  position: $position;
+  // Render offsets
+  @each $offset, $offset-value in $offsets {
+    @if($offset-value){
+      #{$offset}: #{$offset-value};
+    }
+  }
+}
