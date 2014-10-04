@@ -1,0 +1,1034 @@
+<!doctype html>
+
+
+
+
+<html lang="en">
+<head>
+  
+  <meta charset="utf-8" />
+
+<title>SassDoc</title>
+<link rel="stylesheet" href="assets/css/main.css" />
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
+<meta name="viewport" content="width=device-width">
+<meta content="IE=edge, chrome=1" http-equiv="X-UA-Compatible">
+
+<!-- Thanks to Sass-lang.com for the icons -->
+<link href="http://sass-lang.com/favicon.ico" rel="shortcut icon">
+
+</head>
+<body>
+
+  
+  <aside class="sidebar" role="nav">
+    
+  <div class="sidebar__header">
+  <h1 class="sidebar__title">
+    
+      SassDoc
+    
+  </h1>
+</div>
+
+<div class="sidebar__body">
+  
+  
+    <button type="button" class="btn-toggle  js-btn-toggle" data-alt="Open all">Close all</button>
+
+    
+    
+      <p class="sidebar__item  sidebar__item--heading" data-slug="undefined"><a href="#undefined">General</a></p>
+
+      
+      
+        <div>
+
+        
+        
+
+        
+        
+        
+      
+        
+
+        
+        
+
+        
+        
+          <p class="sidebar__item  sidebar__item--sub-heading" data-slug="undefined-mixin"><a href="#undefined-mixin">mixins</a></p>
+
+          
+          
+            <ul class="list-unstyled">
+            <li class="sidebar__item  sassdoc__item" data-name="position" data-type="mixin">
+              <a href="#mixin-position">position
+              
+              
+              </a>
+            </li>
+            
+          
+            
+            <li class="sidebar__item  sassdoc__item" data-name="absolute" data-type="mixin">
+              <a href="#mixin-absolute">absolute
+              
+              
+              </a>
+            </li>
+            
+          
+            
+            <li class="sidebar__item  sassdoc__item" data-name="fixed" data-type="mixin">
+              <a href="#mixin-fixed">fixed
+              
+              
+              </a>
+            </li>
+            
+          
+            
+            <li class="sidebar__item  sassdoc__item" data-name="relative" data-type="mixin">
+              <a href="#mixin-relative">relative
+              
+              
+              </a>
+            </li>
+            </ul>
+          
+        
+        </div>
+      
+
+    
+  
+</div>
+
+
+  </aside>
+
+  
+  <article class="main" role="main">
+
+    
+    <header class="header" role="banner">
+  <div class="container">
+  
+
+    <div class="sassdoc__searchbar  searchbar">
+       <label for="js-search-input" class="visually-hidden">Search</label>
+       <div class="searchbar__form" id="js-search">
+         <input name="search" type="search" class="searchbar__field" autocomplete="off" autofocus id="js-search-input" placeholder="Search" />
+         <ul class="searchbar__suggestions" id="js-search-suggestions"></ul>
+       </div>
+     </div>
+  </div>
+</header>
+
+
+    <div class="container">
+    
+
+  
+  
+
+    
+    
+      <section class="main__section">
+        <h1 class="main__heading" id="undefined">General</h1>
+
+        
+        
+
+          
+          
+
+          
+          
+        
+
+          
+          
+
+          
+          
+            <section class="main__sub-section" id="undefined-mixin">
+              <h2 class="main__heading--secondary">mixins</h2>
+
+              
+              
+                <section class="main__item  item" id="mixin-position">
+
+<h3 class="item__heading">
+  
+
+  <a class="item__name" href="#mixin-position">position</a>
+
+  
+
+  
+</h3>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+  
+
+  
+    
+  
+
+
+<div class="relative  clear  code--collapsed">
+  <pre class="item__code  item__code--togglable  language-scss"
+    data-current-state="collapsed"
+    data-expanded="@mixin position($position, $args: ()) { 
+
+  // Offsets acts as our model. We use the args to adjust its
+  // values and untimately use it to render.
+  $offsets: (
+    &quot;top&quot;: null,
+    &quot;right&quot;: null,
+    &quot;bottom&quot;: null,
+    &quot;left&quot;: null
+  );
+
+  // If a keyword accepted a value and it was present $skip will be set to true so
+  // that we don&#39;t parse that value as a keyword and skip on to the next item
+  $skip: false;
+
+  // Run through each item, checking its validity and setting any offsets it
+  // effects.
+  @each $item in $args {
+
+    @if not $skip {
+      // Setup for this iteration
+      $index: index($args, $item);
+      $is-last-item: $index == length($args);
+      $next-item: null;
+
+      @if not $is-last-item {
+        $next-item: nth($args, $index + 1);
+      }
+
+      // Handle keyword that doesn&#39;t accept a value
+      @if index($pos-always-valueless, $item) {
+        @if $is-last-item or pos-is-keyword($next-item) {
+          $offsets: pos-parse-offsets-for-always-valueless($offsets, $item);
+        } @else {
+          @error &quot;Argument Error: `#{$item}` cannot be followed by a value, yet one has been found: `#{$next-item}`.&quot;;
+        }
+
+      // Ensure there is a following value and that it is not unitless
+      } @else if index($pos-always-value, $item) {
+        // Do we have a united next item?
+        @if not $is-last-item and pos-is-valid-value($next-item) {
+          $skip: true;
+          $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
+        } @else {
+          @error &quot;Argument Error: `#{$item}` should be followed by a valid value, yet it was `#{$next-item}`.&quot;;
+        }
+
+      } @else if index($pos-support-valueless, $item) {
+        // Is the next item is a valid value?
+        $value: null;
+
+        @if not $is-last-item and pos-is-valid-value($next-item) {
+          $skip: true;
+          $value: $next-item;
+
+        // Otherwise treat as having a value of zero
+        } @else {
+          $value: 0;
+        }
+
+        $offsets: map-merge($offsets, ($item: $value));
+      } @else {
+        @error &quot;Argument Error: `#{$item}` is not a valid keyword.&quot;;
+      }
+
+    } @else {
+      // We skipped this item, so reset for next iteration
+      $skip: false;
+    }
+  }
+
+  @include pos-render($position, $offsets);
+ }"
+    data-collapsed="@mixin position($position, $args: ()) { ... }"><code>@mixin position($position, $args: ()) { ... }</code></pre>
+
+  
+</div>
+
+
+
+
+
+
+  
+    
+    
+
+  
+    
+    <h3 class="item__sub-heading">Parameters</h3>
+
+
+
+  <table class="item__parameters">
+    <thead>
+      <tr>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Name</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Description</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Type</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Default value</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr class="item__parameter">
+          <th scope="row" data-label="name"><code>$position</code></th>
+          <td data-label="desc"><p>One of absolute | relative | fixed</p>
+</td>
+          <td data-label="type">
+          
+            String
+          
+          </td>
+          <td data-label="default">
+          
+            &mdash;<span class="visually-hidden"> none</span>
+          
+          </td>
+        </tr>
+      
+        <tr class="item__parameter">
+          <th scope="row" data-label="name"><code>$args</code></th>
+          <td data-label="desc"><p>A list of offset keywords and values. Some keywords require a following value, some do not
+ accept a following value, and for some the value is optional. The possible values are:</p>
+<ul>
+<li><code>top</code>, <code>bottom</code>, <code>left</code>, and <code>right</code> If one of these keywords is followed by a value, the
+offset will be set to that value. If no value follows, the offset will be set to zero.</li>
+<li><code>offset | all | offset-h | offset-v</code> All these values require a value. <code>offset</code> and <code>all</code>
+(which is just an alias of <code>offset</code>) will set all four offsets (&#39;top&#39;, &#39;bottom&#39;, &#39;left&#39;
+and <code>right</code>) to the following value. <code>offset-h</code> will set the <code>left</code> and <code>right</code> offsets to the
+following value, and <code>offset-v</code> will set the <code>top</code> and <code>bottom</code> offsets to the following
+value.</li>
+<li><p><code>fill</code>, <code>fill-h</code> and <code>fill-v</code> do not take a following value. <code>fill</code> will set all offsets to
+zero. <code>fill-h</code> will set the <code>left</code> and <code>right</code> offsets to zero, and <code>fill-v</code> will set the
+<code>top</code> and <code>bottom</code> offsets to zero.</p>
+<p>Values are evaluated from left to right with later values overriding earlier values.</p>
+</li>
+</ul>
+</td>
+          <td data-label="type">
+          
+            List
+          
+          </td>
+          <td data-label="default">
+          
+            <code>()</code>
+          
+          </td>
+        </tr>
+      
+    </tbody>
+  </table>
+
+
+
+  
+    
+    
+
+  
+    
+    
+  <h3 class="item__sub-heading">Example</h3>
+
+  
+  <div class="item__example  example">
+    
+    <div class="example__description"><p>Usage</p>
+</div>
+    
+    <pre class="example__code"><code class="language-scss">  .element {
+    @include position(absolute, left top 10px);
+  }</code></pre>
+  </div>
+  
+  <div class="item__example  example">
+    
+    <div class="example__description"><p>CSS Output</p>
+</div>
+    
+    <pre class="example__code"><code class="language-css">  .element {
+    position: absolute;
+    left: 0;
+    top: 10px;
+  }</code></pre>
+  </div>
+  
+
+
+  
+    
+    
+  <h3 class="item__sub-heading">Throws</h3>
+
+  <ul class="list-unstyled">
+    
+      <li><p>Argument Error</p>
+</li>
+    
+  </ul>
+
+
+  
+    
+    
+
+
+
+
+  
+    
+    
+
+
+
+
+
+  
+    
+    
+
+  
+    
+    
+
+
+
+
+  
+    
+    
+
+  
+    
+    
+  
+    
+    
+  <h3 class="item__sub-heading">Author</h3>
+
+  <ul class="list-unstyled">
+    
+      <li><p>Pedr Browne</p>
+</li>
+    
+  </ul>
+
+
+  
+
+
+
+</section>
+              
+                <section class="main__item  item" id="mixin-absolute">
+
+<h3 class="item__heading">
+  
+
+  <a class="item__name" href="#mixin-absolute">absolute</a>
+
+  
+
+  
+</h3>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+<div class="relative  clear  code--collapsed">
+  <pre class="item__code  item__code--togglable  language-scss"
+    data-current-state="collapsed"
+    data-expanded="@mixin absolute($args) { 
+  @include position(absolute, $args);
+ }"
+    data-collapsed="@mixin absolute($args) { ... }"><code>@mixin absolute($args) { ... }</code></pre>
+
+  
+</div>
+
+
+
+
+
+
+  
+    
+    
+  <h3 class="item__sub-heading">Description</h3>
+
+  <div class="item__description"><p>Shorthand for <code>@include position(absolute, args)</code>.</p>
+</div>
+
+
+  
+    
+    <h3 class="item__sub-heading">Parameters</h3>
+
+
+
+  <table class="item__parameters">
+    <thead>
+      <tr>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Name</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Description</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Type</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Default value</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr class="item__parameter">
+          <th scope="row" data-label="name"><code>$args</code></th>
+          <td data-label="desc"><p>A list of offset keywords and values.</p>
+</td>
+          <td data-label="type">
+          
+            List
+          
+          </td>
+          <td data-label="default">
+          
+            &mdash;<span class="visually-hidden"> none</span>
+          
+          </td>
+        </tr>
+      
+    </tbody>
+  </table>
+
+
+
+  
+    
+    
+
+  
+    
+    
+
+  
+    
+    
+
+  
+    
+    
+
+
+
+
+  
+    
+    
+
+
+
+
+
+  
+    
+    
+
+  
+    
+    
+
+
+  
+    
+      
+      <h3 class="item__sub-heading">See</h3>
+      <ul class="list-unstyled  list-inline">
+    
+
+    <li><a href="#mixin-position"><code>position</code></a></li>
+  
+
+
+
+
+</ul>
+
+
+  
+    
+    
+
+  
+    
+    
+  
+    
+    
+  <h3 class="item__sub-heading">Author</h3>
+
+  <ul class="list-unstyled">
+    
+      <li><p>Pedr Browne</p>
+</li>
+    
+  </ul>
+
+
+  
+
+
+
+</section>
+              
+                <section class="main__item  item" id="mixin-fixed">
+
+<h3 class="item__heading">
+  
+
+  <a class="item__name" href="#mixin-fixed">fixed</a>
+
+  
+
+  
+</h3>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+<div class="relative  clear  code--collapsed">
+  <pre class="item__code  item__code--togglable  language-scss"
+    data-current-state="collapsed"
+    data-expanded="@mixin fixed($args) { 
+  @include position(fixed, $args);
+ }"
+    data-collapsed="@mixin fixed($args) { ... }"><code>@mixin fixed($args) { ... }</code></pre>
+
+  
+</div>
+
+
+
+
+
+
+  
+    
+    
+  <h3 class="item__sub-heading">Description</h3>
+
+  <div class="item__description"><p>Shorthand for <code>@include position(absolute, args)</code>.</p>
+</div>
+
+
+  
+    
+    <h3 class="item__sub-heading">Parameters</h3>
+
+
+
+  <table class="item__parameters">
+    <thead>
+      <tr>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Name</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Description</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Type</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Default value</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr class="item__parameter">
+          <th scope="row" data-label="name"><code>$args</code></th>
+          <td data-label="desc"><p>A list of offset keywords and values.</p>
+</td>
+          <td data-label="type">
+          
+            List
+          
+          </td>
+          <td data-label="default">
+          
+            &mdash;<span class="visually-hidden"> none</span>
+          
+          </td>
+        </tr>
+      
+    </tbody>
+  </table>
+
+
+
+  
+    
+    
+
+  
+    
+    
+
+  
+    
+    
+
+  
+    
+    
+
+
+
+
+  
+    
+    
+
+
+
+
+
+  
+    
+    
+
+  
+    
+    
+
+
+  
+    
+      
+      <h3 class="item__sub-heading">See</h3>
+      <ul class="list-unstyled  list-inline">
+    
+
+    <li><a href="#mixin-position"><code>position</code></a></li>
+  
+
+
+
+
+</ul>
+
+
+  
+    
+    
+
+  
+    
+    
+  
+    
+    
+  <h3 class="item__sub-heading">Author</h3>
+
+  <ul class="list-unstyled">
+    
+      <li><p>Pedr Browne</p>
+</li>
+    
+  </ul>
+
+
+  
+
+
+
+</section>
+              
+                <section class="main__item  item" id="mixin-relative">
+
+<h3 class="item__heading">
+  
+
+  <a class="item__name" href="#mixin-relative">relative</a>
+
+  
+
+  
+</h3>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+<div class="relative  clear  code--collapsed">
+  <pre class="item__code  item__code--togglable  language-scss"
+    data-current-state="collapsed"
+    data-expanded="@mixin relative($args) { 
+  @include position(relative, $args);
+ }"
+    data-collapsed="@mixin relative($args) { ... }"><code>@mixin relative($args) { ... }</code></pre>
+
+  
+</div>
+
+
+
+
+
+
+  
+    
+    
+  <h3 class="item__sub-heading">Description</h3>
+
+  <div class="item__description"><p>Shorthand for <code>@include position(absolute, args)</code>.</p>
+</div>
+
+
+  
+    
+    <h3 class="item__sub-heading">Parameters</h3>
+
+
+
+  <table class="item__parameters">
+    <thead>
+      <tr>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Name</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Description</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Type</th>
+        <th scope="col"><span class="visually-hidden"> parameter </span>Default value</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr class="item__parameter">
+          <th scope="row" data-label="name"><code>$args</code></th>
+          <td data-label="desc"><p>A list of offset keywords and values.</p>
+</td>
+          <td data-label="type">
+          
+            List
+          
+          </td>
+          <td data-label="default">
+          
+            &mdash;<span class="visually-hidden"> none</span>
+          
+          </td>
+        </tr>
+      
+    </tbody>
+  </table>
+
+
+
+  
+    
+    
+
+  
+    
+    
+
+  
+    
+    
+
+  
+    
+    
+
+
+
+
+  
+    
+    
+
+
+
+
+
+  
+    
+    
+
+  
+    
+    
+
+
+  
+    
+      
+      <h3 class="item__sub-heading">See</h3>
+      <ul class="list-unstyled  list-inline">
+    
+
+    <li><a href="#mixin-position"><code>position</code></a></li>
+  
+
+
+
+
+</ul>
+
+
+  
+    
+    
+
+  
+    
+    
+  
+    
+    
+  <h3 class="item__sub-heading">Author</h3>
+
+  <ul class="list-unstyled">
+    
+      <li><p>Pedr Browne</p>
+</li>
+    
+  </ul>
+
+
+  
+
+
+
+</section>
+              
+            </section>
+          
+        
+
+      </section>
+    
+
+  
+
+
+    </div>
+
+    
+    
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      
+        <div class="footer__project-info  project-info">
+          <!-- Name and URL -->
+          
+            <span class="project-info__name">SassDoc</span>
+          
+
+          <!-- Version -->
+          
+
+          <!-- License -->
+          
+        </div>
+      
+
+      
+        <span class="footer__watermark">Built with <a href="https://github.com/SassDoc/sassdoc">SassDoc</a>.</span>
+      
+    </div>
+  </footer>
+
+
+  </article>
+
+
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="assets/js/main.min.js"></script>
+
+</body>
+</html>

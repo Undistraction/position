@@ -1,0 +1,137 @@
+$pos-always-valueless: "fill" "fill-h" "fill-v";
+$pos-always-value: "offset" "offset-h" "offset-v" "all";
+$pos-support-valueless: "left" "right" "top" "bottom";
+$pos-valid-unitless-values: "auto" "initial" "inherit" 0;
+$pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
+
+/**
+ * @access private
+ *
+ * Determine if the given value is valid as an offset value.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ */
+@function pos-is-valid-value($value) {
+  @return pos-is-number-with-unit($value)
+       or pos-is-valid-unitless($value)
+       or pos-is-calc($value);
+}
+
+/**
+ * @access private
+ *
+ * Determine if the value is a known keyword.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ */
+@function pos-is-keyword($value) {
+  @return not not index($pos-keywords, $value);
+}
+
+/**
+ * @access private
+ *
+ * Determine if the value is a valid unitless value.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ */
+@function pos-is-valid-unitless($value) {
+  @return not not index($pos-valid-unitless-values, $value);
+}
+
+/**
+ * @access private
+ *
+ * Determine if the value is a number with a unit.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ */
+@function pos-is-number_with_unit($value) {
+  @return (type-of($value) == "number" and not unitless($value));
+}
+
+/**
+ * @access private
+ *
+ * Determine if the value is a `calc()` expression.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ */
+@function pos-is-calc($value) {
+ @return str-slice($value + "", 1, 4) == "calc";
+}
+
+/**
+ * @access private
+ *
+ * Parse keyword to offset values.
+ * @param {Map} $offsets Map of offsets to render.
+ * @param {String} $item Offset keyword.
+ * @returns {Map} Offsets
+ */
+@function pos-parse-offsets-for-always-valueless($offsets, $item) {
+  // Horizontal Fill
+  @if $item == "fill-h" or $item == "fill"  {
+    $offsets: map-merge($offsets, (
+      "left": 0,
+      "right": 0
+    ));
+  }
+
+  // Vertical Fill
+  @if $item == "fill-v" or $item == "fill" {
+    $offsets: map-merge($offsets, (
+      "top": 0,
+      "bottom": 0
+    ));
+  }
+
+  @return $offsets;
+}
+
+/**
+ * @access private
+ *
+ * Parse keyword and value to offset values.
+ * @param {Map} $offsets Map of offsets to render.
+ * @param {String} $item Offset keyword.
+ * @param {String} $item Offset value.
+ * @returns {Map} Offsets
+ */
+@function pos-parse-offsets-for-always-value($offsets, $item, $value) {
+
+  @if $item == "offset-h" or $item == "offset" or $item == "all" {
+    $offsets: map-merge($offsets, (
+      "left": $value,
+      "right": $value
+    ));
+  }
+
+  @if $item == "offset-v" or $item == "offset" or $item == "all" {
+    $offsets: map-merge($offsets, (
+      "top": $value,
+      "bottom": $value
+    ));
+  }
+
+  @return $offsets;
+}
+
+/**
+ * @access private
+ *
+ * Render offsets to CSS properties
+ * @param {String} $position One of absolute | relative | fixed.
+ * @param {List} $args A list of offset keywords and values.
+ */
+@mixin pos-render($position, $offsets) {
+  // Render position
+  position: $position;
+
+  // Render offsets
+  @each $offset, $offset-value in $offsets {
+    @if $offset-value {
+      #{$offset}: #{$offset-value};
+    }
+  }
+}
