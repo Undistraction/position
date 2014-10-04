@@ -118,13 +118,27 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 // -------------------------------------------------------------------------------------------------
 
 @function pos-is-valid-value($value) {
-  @return (type-of($value) == "number" and not unitless($value))
-       or (index($pos-valid-unitless-values, $value));
+  @return pos-is-number-with-unit($value)
+       or pos-is-valid-unitless($value)
+       or pos-is-calc($value);
 }
 
 @function pos-is-keyword($value) {
   @return not not index($pos-keywords, $value);
 }
+
+@function pos-is-valid-unitless($value) {
+  @return not not index($pos-valid-unitless-values, $value);
+}
+
+@function pos-is-number_with_unit($value) {
+  @return (type-of($value) == "number" and not unitless($value));
+}
+
+@function pos-is-calc($value) {
+ @return str-slice($value + "", 1, 4) == "calc";
+}
+
 
 @function pos-parse-offsets-for-always-valueless($offsets, $item) {
   // Horizontal Fill
