@@ -44,7 +44,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
   // effects.
   @each $item in $args {
 
-    @if $skip == false {
+    @if not $skip {
       // Setup for this iteration
       $index: index($args, $item);
       $is-last-item: $index == length($args);
@@ -161,7 +161,7 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
   
   // Render offsets
   @each $offset, $offset-value in $offsets {
-    @if($offset-value) {
+    @if $offset-value {
       #{$offset}: #{$offset-value};
     }
   }
