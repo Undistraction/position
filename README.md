@@ -23,9 +23,9 @@ There are three mixins to remove the need to set the postition value. They all t
 single argument:
 
 ```
-@include position-absolute(offsets);
-@include position-fixed(offsets);
-@include position-relative(offsets);
+@include absolute(offsets);
+@include fixed(offsets);
+@include relative(offsets);
 ```
 
 The value for offsets is a list of keywords, some of which accept values which must follow those
@@ -37,11 +37,11 @@ You can use `top`, `bottom`, `left` and `right` either with or without a value:
 
 ```
 .Example-without-value {
-  @include position-absolute(top left);
+  @include absolute(top left);
 }
 
 .Example-with-value {
-  @include position-absolute(top 1rem left 2rem);
+  @include absolute(top 1rem left 2rem);
 }
 ```
 
@@ -67,15 +67,15 @@ Offset keywords allow you to set offsets to a given value:
 
 ```
 .Example-with-offset {
-  @include position-absolute(offset 2rem);
+  @include absolute(offset 2rem);
 }
 
 .Example-with-offset-h {
-  @include position-absolute(offset-h 2rem);
+  @include absolute(offset-h 2rem);
 }
 
 .Example-with-offset-v {
-  @include position-absolute(offset-v 2rem);
+  @include absolute(offset-v 2rem);
 }
 ```
 
@@ -110,15 +110,15 @@ the offset keywords with a value of zero.
 
 ```
 .Example-with-fill {
-  @include position-absolute(fill);
+  @include absolute(fill);
 }
 
 .Example-with-fill-h {
-  @include position-absolute(fill-h);
+  @include absolute(fill-h);
 }
 
 .Example-with-fill-v {
-  @include position-absolute(fill-v);
+  @include absolute(fill-v);
 }
 ```
 

@@ -94,15 +94,15 @@ $pos-valid-unitless-values: auto initial inherit 0;
 
 // Shorthand
 
-@mixin position-absolute($args: ()) {
+@mixin absolute($args: ()) {
   @include position(absolute, $args);
 }
 
-@mixin position-fixed($args: ()) {
+@mixin fixed($args: ()) {
   @include position(fixed, $args);
 }
 
-@mixin position-relative($args: ()) {
+@mixin relative($args: ()) {
   @include position(relative, $args);
 }
 
