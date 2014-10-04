@@ -129,31 +129,40 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 @function pos-parse-offsets-for-always-valueless($offsets, $item) {
   // Horizontal Fill
   @if $item == "fill-h" or $item == "fill"  {
-    $offsets: map-merge($offsets, ("left": 0));
-    $offsets: map-merge($offsets, ("right": 0));
+    $offsets: map-merge($offsets, (
+      "left": 0,
+      "right": 0
+    ));
   }
 
   // Vertical Fill
   @if $item == "fill-v" or $item == "fill" {
-    $offsets: map-merge($offsets, ("top": 0));
-    $offsets: map-merge($offsets, ("bottom": 0));
+    $offsets: map-merge($offsets, (
+      "top": 0,
+      "bottom": 0
+    ));
   }
 
   @return $offsets;
 }
 
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
+
   @if $item == "offset-h" or $item == "offset" {
-    $offsets: map-merge($offsets, ("left": $value));
-    $offsets: map-merge($offsets, ("right": $value));
+    $offsets: map-merge($offsets, (
+      "left": $value,
+      "right": $value
+    ));
   }
 
   @if $item == "offset-v" or $item == "offset" {
-    $offsets: map-merge($offsets, ("top": $value));
-    $offsets: map-merge($offsets, ("bottom": $value));
+    $offsets: map-merge($offsets, (
+      "top": $value,
+      "bottom": $value
+    ));
   }
 
-   @return $offsets;
+  @return $offsets;
 }
 
 @mixin pos-render($position, $offsets) {
