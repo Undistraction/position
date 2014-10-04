@@ -54,10 +54,10 @@ Renders:
   left 0;
 }
 
-.Example-without-value {
+.Example-with-value {
   position: absolute;
   top: 1rem;
-  left 1rem;
+  left 2rem;
 }
 ```
 
