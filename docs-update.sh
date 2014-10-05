@@ -2,3 +2,4 @@
 git checkout master ./docs
 git add -A
 git c -m "Update Docs"
+git push origin gh-pages
