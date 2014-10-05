@@ -5,6 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-open');
+  grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('bootcamp');
   grunt.loadNpmTasks('grunt-sassdoc');
 
@@ -18,6 +19,7 @@ module.exports = function(grunt) {
 
     pkg: grunt.file.readJSON('package.json'),
 
+    // Concat
     concat: {
       options: {
         banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n',
@@ -46,7 +48,7 @@ module.exports = function(grunt) {
       }
     },
 
-    // Bootcamp
+    // Tests
     bootcamp: {
       test: {
         files: {
@@ -66,7 +68,7 @@ module.exports = function(grunt) {
       }
     },
 
-    //Docs
+    // Docs
     sassdoc: {
       'default': {
         'src': './<%= dir.src %>',
@@ -82,6 +84,24 @@ module.exports = function(grunt) {
         path: './docs/index.html',
         app: 'Google Chrome'
       }
+    },
+
+    // Versioning
+    bump: {
+      options: {
+        files: ['package.json', 'bower.json'],
+        updateConfigs: ['pkg'],
+        commit: true,
+        commitMessage: 'version: Bump to %VERSION%',
+        commitFiles: ['package.json', 'bower.json', 'docs/*'],
+        createTag: true,
+        tagName: '%VERSION%',
+        tagMessage: 'Version %VERSION%',
+        push: true,
+        pushTo: 'upstream',
+        gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d',
+        globalReplace: false
+      }
     }
 
   });
@@ -91,5 +111,5 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', ['test', 'watch']);
   grunt.registerTask('build', ['test', 'sassdoc', 'concat']);
   grunt.registerTask('docs', ['sassdoc', 'open:docs']);
-
+  grunt.registerTask('version', ['bump-only:minor', 'sassdoc', 'bump-commit']);
 };
