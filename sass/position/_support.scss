@@ -1,15 +1,138 @@
+// Keywords
+$pos-accepted-position-values: "fixed" "absolute" "relative" "static";
 $pos-always-valueless: "fill" "fill-h" "fill-v";
 $pos-always-value: "offset" "offset-h" "offset-v" "all";
 $pos-support-valueless: "left" "right" "top" "bottom";
 $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
 $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
 
+// Errors
+$pos-error-invalid-position-value: "Invalid Position Value";
+$pos-error-offset-parse-error: "Offset Parse Error";
+$pos-last-error: null;
+$pos-under-test: false;
+
 /**
+ * By default, this function will throw a Sass error, but allows errors to be stopped during testing,
+ * with the error saved to `$pos-last-error` instead so tests can check it was thrown.
+ * @param {String} $error The name of the error
+ * @param {String} $message The error message
+ * @returns {Map} A map of offsets to be rendered as CSS properties
  * @access private
- *
+ */
+@function pos-throw-error($error, $message) {
+  @if $pos-under-test {
+    $pos-last-error: $error !global;
+  } @else {
+    @error "#{$error} #{$message}";
+  }
+  @return null;
+}
+
+/**
+ * This is the workhorse function, taking a list of offset keywords and values and parsing them
+ * to an object of offset values.
+ * @param {List} $args A list of offset keywords and values
+ * @returns {Map} A map of offsets to be rendered as CSS properties
+ * @access private
+ */
+@function pos-parse-offsets($args) {
+
+  // Offsets acts as our model. We use the args to adjust its
+  // values and untimately use it to render.
+  $offsets: (
+    "top": null,
+    "right": null,
+    "bottom": null,
+    "left": null
+  );
+
+  // If a keyword accepted a value and it was present $skip will be set to true so
+  // that we don't parse that value as a keyword and skip on to the next item
+  $skip: false;
+
+  // Run through each item, checking its validity and setting any offsets it
+  // effects.
+  @each $item in $args {
+
+    @if not $skip {
+      // Setup for this iteration
+      $index: index($args, $item);
+      $is-last-item: $index == length($args);
+      $next-item: null;
+
+      @if not $is-last-item {
+        $next-item: nth($args, $index + 1);
+      }
+
+      // Handle keyword that doesn't accept a value
+      @if index($pos-always-valueless, $item) {
+        @if $is-last-item or pos-is-keyword($next-item) {
+          $offsets: pos-parse-offsets-for-always-valueless($offsets, $item);
+        } @else {
+          $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` cannot be followed by a value, yet one has been found: `#{$next-item}`.");
+        }
+
+      // Ensure there is a following value and that it is not unitless
+      } @else if index($pos-always-value, $item) {
+        // Do we have a united next item?
+        @if not $is-last-item and pos-is-valid-value($next-item) {
+          $skip: true;
+          $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
+        } @else {
+          $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` should be followed by a valid value, yet it was `#{$next-item}`.");
+        }
+
+      } @else if index($pos-support-valueless, $item) {
+        // Is the next item is a valid value?
+        $value: null;
+
+        @if not $is-last-item and pos-is-valid-value($next-item) {
+          $skip: true;
+          $value: $next-item;
+
+        // Otherwise treat as having a value of zero
+        } @else {
+          $value: 0;
+        }
+
+        $offsets: map-merge($offsets, ($item: $value));
+      } @else {
+        $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` is not a valid keyword.");
+      }
+
+    } @else {
+      // We skipped this item, so reset for next iteration
+      $skip: false;
+    }
+  }
+
+  // Build and return a map containing non-null offsets
+  $non-null-offsets:();
+  @each $key, $value in $offsets {
+    @if $value {
+      $non-null-offsets: map-merge($non-null-offsets, ($key: $value));
+    }
+  }
+
+  @return $non-null-offsets;
+}
+
+/**
+ * Determine if the value is a valid value for position
+ * @param {String} $value Value to use for $position.
+ * @returns {Bool}
+ * @access private
+ */
+@function pos-validate-position($value){
+  @return not not index($pos-accepted-position-values, $value);
+}
+
+/**
  * Determine if the given value is valid as an offset value.
  * @param {String} $value Item from offset list.
  * @returns {Bool}
+ * @access private
  */
 @function pos-is-valid-value($value) {
   @return pos-is-number-with-unit($value)
@@ -18,8 +141,6 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 }
 
 /**
- * @access private
- *
  * Determine if the value is a known keyword.
  * @param {String} $value Item from offset list.
  * @returns {Bool}
@@ -29,45 +150,41 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 }
 
 /**
- * @access private
- *
  * Determine if the value is a valid unitless value.
  * @param {String} $value Item from offset list.
  * @returns {Bool}
+ * @access private
  */
 @function pos-is-valid-unitless($value) {
   @return not not index($pos-valid-unitless-values, $value);
 }
 
 /**
- * @access private
- *
  * Determine if the value is a number with a unit.
  * @param {String} $value Item from offset list.
  * @returns {Bool}
+ * @access private
  */
 @function pos-is-number_with_unit($value) {
   @return (type-of($value) == "number" and not unitless($value));
 }
 
 /**
- * @access private
- *
  * Determine if the value is a `calc()` expression.
  * @param {String} $value Item from offset list.
  * @returns {Bool}
+ * @access private
  */
 @function pos-is-calc($value) {
  @return str-slice($value + "", 1, 4) == "calc";
 }
 
 /**
- * @access private
- *
  * Parse keyword to offset values.
  * @param {Map} $offsets Map of offsets to render.
  * @param {String} $item Offset keyword.
  * @returns {Map} Offsets
+ * @access private
  */
 @function pos-parse-offsets-for-always-valueless($offsets, $item) {
   // Horizontal Fill
@@ -90,13 +207,12 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 }
 
 /**
- * @access private
- *
  * Parse keyword and value to offset values.
  * @param {Map} $offsets Map of offsets to render.
  * @param {String} $item Offset keyword.
  * @param {String} $item Offset value.
  * @returns {Map} Offsets
+ * @access private
  */
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
 
@@ -118,11 +234,10 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 }
 
 /**
- * @access private
- *
  * Render offsets to CSS properties
  * @param {String} $position One of absolute | relative | fixed.
  * @param {List} $args A list of offset keywords and values.
+ * @access private
  */
 @mixin pos-render($position, $offsets) {
   // Render position
@@ -130,8 +245,6 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 
   // Render offsets
   @each $offset, $offset-value in $offsets {
-    @if $offset-value {
-      #{$offset}: #{$offset-value};
-    }
+    #{$offset}: #{$offset-value};
   }
 }

@@ -42,75 +42,18 @@
  * @throws Argument Error
  * @output Outputs the position property and any given offset properties
  */
-@mixin position($position, $args: ()) {
+@mixin position($position, $args:null) {
 
-  // Offsets acts as our model. We use the args to adjust its
-  // values and untimately use it to render.
-  $offsets: (
-    "top": null,
-    "right": null,
-    "bottom": null,
-    "left": null
-  );
+  $offsets: ();
 
-  // If a keyword accepted a value and it was present $skip will be set to true so
-  // that we don't parse that value as a keyword and skip on to the next item
-  $skip: false;
+  // Check position is a supported value
+  @if not pos-validate-position($position) {
+    $error: pos-throw-error( $pos-error-invalid-position,  "#{$position} is not a valid value for `position`" );
+  }
 
-  // Run through each item, checking its validity and setting any offsets it
-  // effects.
-  @each $item in $args {
-
-    @if not $skip {
-      // Setup for this iteration
-      $index: index($args, $item);
-      $is-last-item: $index == length($args);
-      $next-item: null;
-
-      @if not $is-last-item {
-        $next-item: nth($args, $index + 1);
-      }
-
-      // Handle keyword that doesn't accept a value
-      @if index($pos-always-valueless, $item) {
-        @if $is-last-item or pos-is-keyword($next-item) {
-          $offsets: pos-parse-offsets-for-always-valueless($offsets, $item);
-        } @else {
-          @error "Argument Error: `#{$item}` cannot be followed by a value, yet one has been found: `#{$next-item}`.";
-        }
-
-      // Ensure there is a following value and that it is not unitless
-      } @else if index($pos-always-value, $item) {
-        // Do we have a united next item?
-        @if not $is-last-item and pos-is-valid-value($next-item) {
-          $skip: true;
-          $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
-        } @else {
-          @error "Argument Error: `#{$item}` should be followed by a valid value, yet it was `#{$next-item}`.";
-        }
-
-      } @else if index($pos-support-valueless, $item) {
-        // Is the next item is a valid value?
-        $value: null;
-
-        @if not $is-last-item and pos-is-valid-value($next-item) {
-          $skip: true;
-          $value: $next-item;
-
-        // Otherwise treat as having a value of zero
-        } @else {
-          $value: 0;
-        }
-
-        $offsets: map-merge($offsets, ($item: $value));
-      } @else {
-        @error "Argument Error: `#{$item}` is not a valid keyword.";
-      }
-
-    } @else {
-      // We skipped this item, so reset for next iteration
-      $skip: false;
-    }
+  // Parse offsets if preset
+  @if $args {
+    $offsets: pos-parse-offsets($position, $args);
   }
 
   @include pos-render($position, $offsets);
