@@ -4,13 +4,9 @@ A set of mixins for handling position and offsets.
 
 This project takes Hugo Giraudel's [mixin](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/) and adds some nice features.
 
-## Dependencies & Compatability
-
-It has no dependencies on other Sass libs and should work with Sass 3.3 and up, though it's currently only tested in 3.4.
-
 ## Docs
 
-You can view the docs locally in Chrome using:
+You can view the docs online [here](http://undistraction.github.io/position/docs/) or locally in Chrome by running the following:
 
 ```
 $ sh docs.sh
@@ -159,3 +155,7 @@ Renders:
   bottom: 0;
 }
 ```
+
+## Dependencies & Compatability
+
+It has no dependencies on other Sass libs and should work with Sass 3.3 and up, though it's currently only tested in 3.4.
