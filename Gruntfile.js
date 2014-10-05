@@ -98,7 +98,7 @@ module.exports = function(grunt) {
         tagName: '%VERSION%',
         tagMessage: 'Version %VERSION%',
         push: true,
-        pushTo: 'upstream',
+        pushTo: 'origin',
         gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d',
         globalReplace: false
       }
@@ -111,5 +111,6 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', ['test', 'watch']);
   grunt.registerTask('build', ['test', 'sassdoc', 'concat']);
   grunt.registerTask('docs', ['sassdoc', 'open:docs']);
-  grunt.registerTask('version', ['bump-only:minor', 'sassdoc', 'bump-commit']);
+  grunt.registerTask('patch', ['bump-only:patch', 'sassdoc', 'bump-commit']);
+  grunt.registerTask('minor', ['bump-only:patch', 'sassdoc', 'bump-commit']);
 };
