@@ -1,8 +1,0 @@
-test
-.editorconfig
-.gitattributes
-.gitignore
-.travis.yml
-bower.json
-*.md
-Gruntfile.coffee
