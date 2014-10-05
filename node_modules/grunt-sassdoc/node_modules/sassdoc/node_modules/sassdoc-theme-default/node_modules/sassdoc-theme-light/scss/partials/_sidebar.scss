@@ -1,0 +1,129 @@
+/**
+ * Sidebar
+ */
+.sidebar {
+  @include respond-to("medium") {
+    overflow: auto;
+    box-shadow: 1px 0 1.5px rgba(black, .12);
+    @include fixed(top 0 bottom 0 left 0);
+    width: $sidebar-width;
+    z-index: z("default") + 1;
+    border-right: 1px solid color("light-grey");
+  }
+}
+
+/**
+ * Private and alias annotations
+ */
+.sidebar__annotation {
+  color: color("purple");
+}
+
+$level-1: 1.5em;
+$level-2: $level-1 + 1em;
+$level-3: $level-2 + 2em;
+
+/**
+ * Sidebar content
+ */
+.sidebar__item {
+  font-size: .9em;
+
+  a {
+    padding: .5em $level-3;
+    display: block;
+    text-decoration: none;
+    color: color("dark-grey");
+  }
+
+  &:hover {
+    background: color("light-grey");
+  }
+
+  &.is-collapsed + * {
+    display: none;
+  }
+}
+
+/**
+ * List item heading
+ */
+.sidebar__item--heading {
+  padding: 1em $level-1;
+
+  a {
+    font-weight: bold;
+  }
+}
+
+.sidebar__item--sub-heading {
+  padding: .5em $level-2;
+
+  a {
+    color: #888;
+  }
+}
+
+.sidebar__item--heading,
+.sidebar__item--sub-heading {
+  position: relative;
+
+  &:after {
+    content: '\25B2';
+    @include absolute(right 2em top 50%);
+    margin-top: -.5em;
+    color: color("medium-grey");
+    font-size: .7em;
+  }
+
+  &.is-collapsed:after {
+    content: '\25BC';
+  }
+
+  a {
+    padding: 0;
+    display: inline;
+  }
+}
+
+/**
+ * Project description
+ */
+.sidebar__description {
+  color: color("light-grey");
+  padding-right: 2em;
+}
+
+/**
+ * Sidebar header with title
+ */
+.sidebar__header {
+  border-bottom: 1px solid color("light-grey");
+}
+
+/**
+ * Sidebar main title
+ */
+.sidebar__title {
+  font-size: 1em;
+  margin: 0;
+  padding: 1.45em;
+}
+
+.btn-toggle {
+  background: #EFEFEF;
+  border: none;
+  border-bottom: 1px solid color("light-grey");
+  display: block;
+  padding: 1em;
+  width: 100%;
+  cursor: pointer;
+  color: #999;
+  font-weight: bold;
+  margin: 0;
+  transition: .15s ease-out;
+
+  &:hover {
+    background: #DFDFDF;
+  }
+}

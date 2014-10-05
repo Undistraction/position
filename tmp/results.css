@@ -1,0 +1,146 @@
+@charset "UTF-8";
+/*! sassyjson - v1.1.8 - 2014-06-01 */
+/**
+ * By default, this function will throw a Sass error, but allows errors to be stopped during testing,
+ * with the error saved to `$pos-last-error` instead so tests can check it was thrown.
+ * @param {String} $error The name of the error
+ * @param {String} $message The error message
+ * @returns {Map} A map of offsets to be rendered as CSS properties
+ * @access private
+ */
+/**
+ * This is the workhorse function, taking a list of offset keywords and values and parsing them
+ * to an object of offset values.
+ * @param {List} $args A list of offset keywords and values
+ * @returns {Map} A map of offsets to be rendered as CSS properties
+ * @access private
+ */
+/**
+ * Determine if the value is a valid value for position
+ * @param {String} $value Value to use for $position.
+ * @returns {Bool}
+ * @access private
+ */
+/**
+ * Determine if the given value is valid as an offset value.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ * @access private
+ */
+/**
+ * Determine if the value is a known keyword.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ */
+/**
+ * Determine if the value is a valid unitless value.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ * @access private
+ */
+/**
+ * Determine if the value is a number with a unit.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ * @access private
+ */
+/**
+ * Determine if the value is a `calc()` expression.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ * @access private
+ */
+/**
+ * Parse keyword to offset values.
+ * @param {Map} $offsets Map of offsets to render.
+ * @param {String} $item Offset keyword.
+ * @returns {Map} Offsets
+ * @access private
+ */
+/**
+ * Parse keyword and value to offset values.
+ * @param {Map} $offsets Map of offsets to render.
+ * @param {String} $item Offset keyword.
+ * @param {String} $item Offset value.
+ * @returns {Map} Offsets
+ * @access private
+ */
+/**
+ * Render offsets to CSS properties
+ * @param {String} $position One of absolute | relative | fixed.
+ * @param {List} $args A list of offset keywords and values.
+ * @access private
+ */
+/**
+ * Mixins for setting an elements position and offsets based on the original mixin by Hugo
+ * Giraudel found [here](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/)
+ * @author Pedr Browne
+ **/
+/**
+ * @param {String} $position
+ *  One of absolute | relative | fixed
+ *
+ * @param {List} $args (())
+ *  A list of offset keywords and values. Some keywords require a following value, some do not
+ *  accept a following value, and for some the value is optional. The possible values are:
+ *
+ *  - `top`, `bottom`, `left`, and `right` If one of these keywords is followed by a value, the
+ *  offset will be set to that value. If no value follows, the offset will be set to zero.
+ *  - `offset | all | offset-h | offset-v` All these values require a value. `offset` and `all`
+ *    (which is just an alias of `offset`) will set all four offsets ('top', 'bottom', 'left'
+ *    and `right`) to the following value. `offset-h` will set the `left` and `right` offsets to the
+ *    following value, and `offset-v` will set the `top` and `bottom` offsets to the following
+ *    value.
+ *  - `fill`, `fill-h` and `fill-v` do not take a following value. `fill` will set all offsets to
+ *    zero. `fill-h` will set the `left` and `right` offsets to zero, and `fill-v` will set the
+ *    `top` and `bottom` offsets to zero.
+ *
+ *  Values are evaluated from left to right with later values overriding earlier values.
+ *
+ * @example scss - Usage
+ *   .element {
+ *     @include position(absolute, left top 10px);
+ *   }
+ *
+ * @example css - CSS Output
+ *   .element {
+ *     position: absolute;
+ *     left: 0;
+ *     top: 10px;
+ *   }
+ *
+ * @throws Argument Error
+ * @output Outputs the position property and any given offset properties
+ */
+/**
+ * Shorthand for `@include position(absolute, args)`.
+ * @param {List} $args A list of offset keywords and values.
+ * @output Outputs the position property and any given offset properties
+ * @see {mixin} position
+ */
+/**
+ * Shorthand for `@include position(absolute, args)`.
+ * @param {List} $args A list of offset keywords and values.
+ * @output Outputs the position property and any given offset properties
+ * @see {mixin} position
+ */
+/**
+ * Shorthand for `@include position(absolute, args)`.
+ * @param {List} $args A list of offset keywords and values.
+ * @output Outputs the position property and any given offset properties
+ * @see {mixin} position
+ */
+/* >> Bootcamp >> */
+Test Results {
+  Success: true;
+  Stats:  ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔ ✔;
+  Tests: 13;
+  Asserts: 13;
+  Passed: 13;
+  Failed: 0;
+  Skipped: 0;
+}
+
+/* << Bootcamp << */
+
+/*# sourceMappingURL=results.css.map */

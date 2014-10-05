@@ -1,0 +1,25 @@
+{
+  "name": "bootcamp",
+  "version": "1.1.7",
+  "homepage": "http://github.com/thejameskyle/bootcamp",
+  "main": "dist/bootcamp.scss",
+  "ignore": [
+    "test",
+    ".editorconfig",
+    ".gitattributes",
+    ".gitignore",
+    ".jshintrc",
+    ".travis.yml",
+    "Gruntfile.coffee"
+  ],
+  "_release": "1.1.7",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.1.7",
+    "commit": "b3616eee4f70e4e551fca5ab0307420ada367fc2"
+  },
+  "_source": "git://github.com/thejameskyle/bootcamp.git",
+  "_target": "~1.1.7",
+  "_originalSource": "bootcamp",
+  "_direct": true
+}

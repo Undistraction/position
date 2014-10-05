@@ -1,0 +1,230 @@
+/**
+ * Item
+ */
+.item {
+  & + & {
+    margin: 4em 0;
+  }
+
+  p {
+    margin: 0 0 .5em 0;
+  }
+}
+
+/**
+ * Function name
+ */
+.item__heading {
+  color: color("dark-grey");
+  margin: 0 0 .5em 0;
+  position: relative;
+  font-size: 2em;
+  font-weight: 300;
+  float: left;
+}
+
+/**
+ * Name
+ */
+.item__name {
+  color: color("dark-grey");
+}
+
+/**
+ * Code blocks
+ */
+.item__example {
+  margin-bottom: 1em;
+}
+
+.item__example,
+.item__code {
+  word-wrap: break-word;
+  line-height: 1.42;
+  @include card(1);
+}
+
+/**
+ * Leaves room for view source link
+ */
+.item__code {
+  padding-right: 7em;
+  clear: both;
+  cursor: pointer;
+}
+
+.item__code--togglable {
+  &::after {
+    @include absolute(top -3em right 0);
+    @include opacity(0);
+    color: darken(color("medium-grey"), 10%);
+    font-size: .8em;
+    transition: .2s ease-out;
+  }
+
+  &:hover::after,
+  &:focus::after {
+    @include opacity(1);
+  }
+
+  &[data-current-state="expanded"]::after {
+    content: "Click to collapse.";
+  }
+
+  &[data-current-state="collapsed"]::after {
+    content: "Click to expand.";
+  }
+}
+
+
+/**
+ * Example description
+ */
+.example__description {
+  padding: 1em;
+  background: #EFEFEF;
+
+  p {
+    margin: 0;
+  }
+}
+
+/**
+ * Example code
+ */
+.example__code[class*="language-"] {
+  margin: 0;
+}
+
+
+/**
+ * Anchor
+ */
+.item__anchor {
+  font-size: .6em;
+  color: lighten(color("pink"), 20%);
+
+  @include respond-to("medium") {
+    @include absolute(right 101% bottom .25em);
+    @include opacity(0);
+
+    .item:hover & {
+      @include opacity(1);
+    }
+  }
+}
+
+/**
+ * Deprecated flag
+ */
+.item__deprecated strong {
+  color: darken(red, 10%);
+  text-transform: uppercase;
+}
+
+/**
+ * Type
+ */
+.item__type {
+  color: color("medium-grey");
+  text-transform: capitalize;
+  font-size: .75em;
+}
+
+/**
+ * Aliases
+ */
+.item__alias,
+.item__aliased {
+  color: color("medium-grey");
+  font-size: .8em;
+}
+
+
+.item__sub-heading {
+  color: color("green");
+  margin-bottom: .5em;
+  margin-top: 1.5em;
+  text-transform: uppercase;
+  font-size: 1em;
+}
+
+/**
+ * Parameters table
+ */
+.item__parameters {
+  width: 100%;
+  margin-bottom: 1em;
+  border-collapse: collapse;
+
+  thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid color("medium-grey");
+    border-top: none;
+    text-align: left;
+  }
+
+  tbody th {
+    text-align: left;
+  }
+
+  td, th {
+    padding: .5em .5em .5em 0;
+    vertical-align: top;
+  }
+}
+
+@include respond-to("medium") {
+  tbody > .item__parameter:first-of-type > td {
+    border-top: none;
+  }
+
+  .item__parameters td,
+  .item__parameters th {
+    border-top: 1px solid color("medium-grey");
+  }
+}
+
+/**
+ * Scope/access
+ */
+.item__access {
+  text-transform: capitalize;
+  color: color("purple");
+  font-size: .8em;
+}
+
+/**
+ * Since
+ */
+.item__since {
+  float: right;
+  padding-top: .9em;
+  color: darken(color("medium-grey"), 10%);
+  margin-bottom: 1em;
+}
+
+/**
+ * Link to source
+ */
+.item__source-link {
+  @include absolute(top 1px right 1px);
+  background: white;
+  padding: 1em;
+  z-index: z("default") + 1;
+  color: darken(color("medium-grey"), 10%);
+}
+
+/**
+ * Require's description
+ */
+.item__requires-description {
+  &, * {
+    display: inline-block;
+  }
+  p {
+    vertical-align: sub;
+    margin: 0;
+    padding: 0 4px;
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "display": {
+    "access": ["public", "private"],
+    "alias": false,
+    "watermark": true
+  },
+  "groups": {
+    "undefined": "General"
+  },
+  "shortcutIcon": "http://sass-lang.com/favicon.ico"
+}
