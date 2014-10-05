@@ -53,7 +53,7 @@
 
   // Parse offsets if preset
   @if $args {
-    $offsets: pos-parse-offsets($position, $args);
+    $offsets: pos-parse-offsets($args);
   }
 
   @include pos-render($position, $offsets);
