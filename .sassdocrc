@@ -1,0 +1,17 @@
+{
+  "display": {
+    "access": ["public", "private"],
+    "alias": false,
+    "watermark": true
+  },
+
+  "package": "./package.json",
+
+  "groups": {
+    "undefined": "Position"
+  },
+
+  "theme": "default",
+
+  "basePath": "https://github.com/SassDoc/sassdoc"
+}
