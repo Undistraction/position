@@ -1,6 +1,6 @@
 {
   "name": "Position",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Mixins for setting an elements position and offsets",
   "main": "Gruntfile.js",
   "directories": {
