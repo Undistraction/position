@@ -8,6 +8,20 @@ This project takes Hugo Giraudel's [mixin](http://hugogiraudel.com/2014/05/19/ne
 
 It has no dependencies on other Sass libs and should work with Sass 3.3 and up, though it's currently only tested in 3.4.
 
+## Docs
+
+You can view the docs locally in Chrome using:
+
+```
+$ sh docs.sh
+```
+
+There is also a shell file to build the docs and open them in Chrome:
+
+```
+$ sh docs-build.sh
+```
+
 ## API
 
 The main mixin takes the following form:
