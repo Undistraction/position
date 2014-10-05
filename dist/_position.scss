@@ -1,0 +1,343 @@
+/*! Position - v0.0.3 - 2014-10-05 */
+// Keywords
+$pos-accepted-position-values: "fixed" "absolute" "relative" "static";
+$pos-always-valueless: "fill" "fill-h" "fill-v";
+$pos-always-value: "offset" "offset-h" "offset-v" "all";
+$pos-support-valueless: "left" "right" "top" "bottom";
+$pos-valid-unitless-values: "auto" "initial" "inherit" 0;
+$pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
+
+// Errors
+$pos-error-invalid-position-value: "Invalid Position Value";
+$pos-error-offset-parse-error: "Offset Parse Error";
+$pos-last-error: null;
+$pos-under-test: false;
+
+/**
+ * By default, this function will throw a Sass error, but allows errors to be stopped during testing,
+ * with the error saved to `$pos-last-error` instead so tests can check it was thrown.
+ * @param {String} $error The name of the error
+ * @param {String} $message The error message
+ * @returns {Map} A map of offsets to be rendered as CSS properties
+ * @access private
+ */
+@function pos-throw-error($error, $message) {
+  @if $pos-under-test {
+    $pos-last-error: $error !global;
+  } @else {
+    @error "#{$error} #{$message}";
+  }
+  @return null;
+}
+
+/**
+ * This is the workhorse function, taking a list of offset keywords and values and parsing them
+ * to an object of offset values.
+ * @param {List} $args A list of offset keywords and values
+ * @returns {Map} A map of offsets to be rendered as CSS properties
+ * @access private
+ */
+@function pos-parse-offsets($args) {
+
+  // Offsets acts as our model. We use the args to adjust its
+  // values and untimately use it to render.
+  $offsets: (
+    "top": null,
+    "right": null,
+    "bottom": null,
+    "left": null
+  );
+
+  // If a keyword accepted a value and it was present $skip will be set to true so
+  // that we don't parse that value as a keyword and skip on to the next item
+  $skip: false;
+
+  // Run through each item, checking its validity and setting any offsets it
+  // effects.
+  @each $item in $args {
+
+    @if not $skip {
+      // Setup for this iteration
+      $index: index($args, $item);
+      $is-last-item: $index == length($args);
+      $next-item: null;
+
+      @if not $is-last-item {
+        $next-item: nth($args, $index + 1);
+      }
+
+      // Handle keyword that doesn't accept a value
+      @if index($pos-always-valueless, $item) {
+        @if $is-last-item or pos-is-keyword($next-item) {
+          $offsets: pos-parse-offsets-for-always-valueless($offsets, $item);
+        } @else {
+          $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` cannot be followed by a value, yet one has been found: `#{$next-item}`.");
+        }
+
+      // Ensure there is a following value and that it is not unitless
+      } @else if index($pos-always-value, $item) {
+        // Do we have a united next item?
+        @if not $is-last-item and pos-is-valid-value($next-item) {
+          $skip: true;
+          $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
+        } @else {
+          $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` should be followed by a valid value, yet it was `#{$next-item}`.");
+        }
+
+      } @else if index($pos-support-valueless, $item) {
+        // Is the next item is a valid value?
+        $value: null;
+
+        @if not $is-last-item and pos-is-valid-value($next-item) {
+          $skip: true;
+          $value: $next-item;
+
+        // Otherwise treat as having a value of zero
+        } @else {
+          $value: 0;
+        }
+
+        $offsets: map-merge($offsets, ($item: $value));
+      } @else {
+        $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` is not a valid keyword.");
+      }
+
+    } @else {
+      // We skipped this item, so reset for next iteration
+      $skip: false;
+    }
+  }
+
+  // Build and return a map containing non-null offsets
+  $non-null-offsets:();
+  @each $key, $value in $offsets {
+    @if $value {
+      $non-null-offsets: map-merge($non-null-offsets, ($key: $value));
+    }
+  }
+
+  @return $non-null-offsets;
+}
+
+/**
+ * Determine if the value is a valid value for position
+ * @param {String} $value Value to use for $position.
+ * @returns {Bool}
+ * @access private
+ */
+@function pos-validate-position($value){
+  @return not not index($pos-accepted-position-values, $value);
+}
+
+/**
+ * Determine if the given value is valid as an offset value.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ * @access private
+ */
+@function pos-is-valid-value($value) {
+  @return pos-is-number-with-unit($value)
+       or pos-is-valid-unitless($value)
+       or pos-is-calc($value);
+}
+
+/**
+ * Determine if the value is a known keyword.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ */
+@function pos-is-keyword($value) {
+  @return not not index($pos-keywords, $value);
+}
+
+/**
+ * Determine if the value is a valid unitless value.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ * @access private
+ */
+@function pos-is-valid-unitless($value) {
+  @return not not index($pos-valid-unitless-values, $value);
+}
+
+/**
+ * Determine if the value is a number with a unit.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ * @access private
+ */
+@function pos-is-number_with_unit($value) {
+  @return (type-of($value) == "number" and not unitless($value));
+}
+
+/**
+ * Determine if the value is a `calc()` expression.
+ * @param {String} $value Item from offset list.
+ * @returns {Bool}
+ * @access private
+ */
+@function pos-is-calc($value) {
+ @return str-slice($value + "", 1, 4) == "calc";
+}
+
+/**
+ * Parse keyword to offset values.
+ * @param {Map} $offsets Map of offsets to render.
+ * @param {String} $item Offset keyword.
+ * @returns {Map} Offsets
+ * @access private
+ */
+@function pos-parse-offsets-for-always-valueless($offsets, $item) {
+  // Horizontal Fill
+  @if $item == "fill-h" or $item == "fill"  {
+    $offsets: map-merge($offsets, (
+      "left": 0,
+      "right": 0
+    ));
+  }
+
+  // Vertical Fill
+  @if $item == "fill-v" or $item == "fill" {
+    $offsets: map-merge($offsets, (
+      "top": 0,
+      "bottom": 0
+    ));
+  }
+
+  @return $offsets;
+}
+
+/**
+ * Parse keyword and value to offset values.
+ * @param {Map} $offsets Map of offsets to render.
+ * @param {String} $item Offset keyword.
+ * @param {String} $item Offset value.
+ * @returns {Map} Offsets
+ * @access private
+ */
+@function pos-parse-offsets-for-always-value($offsets, $item, $value) {
+
+  @if $item == "offset-h" or $item == "offset" or $item == "all" {
+    $offsets: map-merge($offsets, (
+      "left": $value,
+      "right": $value
+    ));
+  }
+
+  @if $item == "offset-v" or $item == "offset" or $item == "all" {
+    $offsets: map-merge($offsets, (
+      "top": $value,
+      "bottom": $value
+    ));
+  }
+
+  @return $offsets;
+}
+
+/**
+ * Render offsets to CSS properties
+ * @param {String} $position One of absolute | relative | fixed.
+ * @param {List} $args A list of offset keywords and values.
+ * @access private
+ */
+@mixin pos-render($position, $offsets) {
+  // Render position
+  position: $position;
+
+  // Render offsets
+  @each $offset, $offset-value in $offsets {
+    #{$offset}: #{$offset-value};
+  }
+}
+@import 'position/support';
+
+/**
+ * Mixins for setting an elements position and offsets based on the original mixin by Hugo
+ * Giraudel found [here](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/)
+ * @author Pedr Browne
+ **/
+
+/**
+ * @param {String} $position
+ *  One of absolute | relative | fixed
+ *
+ * @param {List} $args (())
+ *  A list of offset keywords and values. Some keywords require a following value, some do not
+ *  accept a following value, and for some the value is optional. The possible values are:
+ *
+ *  - `top`, `bottom`, `left`, and `right` If one of these keywords is followed by a value, the
+ *  offset will be set to that value. If no value follows, the offset will be set to zero.
+ *  - `offset | all | offset-h | offset-v` All these values require a value. `offset` and `all`
+ *    (which is just an alias of `offset`) will set all four offsets ('top', 'bottom', 'left'
+ *    and `right`) to the following value. `offset-h` will set the `left` and `right` offsets to the
+ *    following value, and `offset-v` will set the `top` and `bottom` offsets to the following
+ *    value.
+ *  - `fill`, `fill-h` and `fill-v` do not take a following value. `fill` will set all offsets to
+ *    zero. `fill-h` will set the `left` and `right` offsets to zero, and `fill-v` will set the
+ *    `top` and `bottom` offsets to zero.
+ *
+ *  Values are evaluated from left to right with later values overriding earlier values.
+ *
+ * @example scss - Usage
+ *   .element {
+ *     @include position(absolute, left top 10px);
+ *   }
+ *
+ * @example css - CSS Output
+ *   .element {
+ *     position: absolute;
+ *     left: 0;
+ *     top: 10px;
+ *   }
+ *
+ * @throws Argument Error
+ * @output Outputs the position property and any given offset properties
+ */
+@mixin position($position, $args:null) {
+
+  $offsets: ();
+
+  // Check position is a supported value
+  @if not pos-validate-position($position) {
+    $error: pos-throw-error( $pos-error-invalid-position,  "#{$position} is not a valid value for `position`" );
+  }
+
+  // Parse offsets if preset
+  @if $args {
+    $offsets: pos-parse-offsets($position, $args);
+  }
+
+  @include pos-render($position, $offsets);
+}
+
+// Shorthand Mixins
+
+/**
+ * Shorthand for `@include position(absolute, args)`.
+ * @param {List} $args A list of offset keywords and values.
+ * @output Outputs the position property and any given offset properties
+ * @see {mixin} position
+ */
+@mixin absolute($args: ()) {
+  @include position(absolute, $args);
+}
+
+/**
+ * Shorthand for `@include position(absolute, args)`.
+ * @param {List} $args A list of offset keywords and values.
+ * @output Outputs the position property and any given offset properties
+ * @see {mixin} position
+ */
+@mixin fixed($args: ()) {
+  @include position(fixed, $args);
+}
+
+/**
+ * Shorthand for `@include position(absolute, args)`.
+ * @param {List} $args A list of offset keywords and values.
+ * @output Outputs the position property and any given offset properties
+ * @see {mixin} position
+ */
+@mixin relative($args: ()) {
+  @include position(relative, $args);
+}
