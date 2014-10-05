@@ -90,3 +90,12 @@
 @mixin relative($args: ()) {
   @include position(relative, $args);
 }
+
+/**
+ * Shorthand for `@include position(static)`.
+ * @output Outputs the position property
+ * @see {mixin} position
+ */
+@mixin relative() {
+  @include position(relative, $args);
+}

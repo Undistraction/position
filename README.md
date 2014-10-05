@@ -31,20 +31,21 @@ $ grunt test
 
 The main mixin takes the following form:
 
-- `position` is one of `absolute`, `fixed` or `relative`.
+- `position` is one of `absolute`, `fixed`, `relative` or static.
 - `offsets` is a list of values defining the offsets
 
 ```
 @include position(position, offsets);
 ```
 
-There are three mixins to remove the need to set the postition value. They all take offsets as a
-single argument:
+There are four mixins to remove the need to set the postition value. They all take offsets as a
+single argument, other than static which has no arguments as offsets will have no effect.
 
 ```
 @include absolute(offsets);
 @include fixed(offsets);
 @include relative(offsets);
+@include static;
 ```
 
 The value for offsets is a list of keywords, some of which accept values which must follow those
