@@ -1,0 +1,169 @@
+@import "support/reset-errors";
+
+@include describe("pos-parse-offsets") {
+
+  // Individual Offsets
+  // -----------------------------------------------------------------------------------------------
+
+  @include it("should parse individual offsets without value to zero") {
+    @include should(
+      expect(
+        pos-parse-offsets(top left bottom right)
+      ),
+      to( equal(
+        ( top: 0, left: 0, bottom: 0, right: 0 )
+      ))
+    );
+  }
+
+  @include it("should parse individual offsets with values to that value") {
+    @include should(
+      expect(
+        pos-parse-offsets(top 10px left 10px bottom 10px right 10px)
+      ),
+      to( equal(
+        ( top: 10px, left: 10px, bottom: 10px, right: 10px )
+      ))
+    );
+  }
+
+  // Offset Keywords
+  // -----------------------------------------------------------------------------------------------
+
+  @include it("should parse keyword offset, setting all offsets to that value") {
+    @include should(
+      expect(
+        pos-parse-offsets(offset 10px)
+      ),
+      to( equal(
+        ( top: 10px, left: 10px, bottom: 10px, right: 10px )
+      ))
+    );
+  }
+
+  @include it("should parse keyword all, setting all offsets to that value") {
+    @include should(
+      expect(
+        pos-parse-offsets(all 10px)
+      ),
+      to( equal(
+        ( top: 10px, left: 10px, bottom: 10px, right: 10px )
+      ))
+    );
+  }
+
+  @include it("should parse keyword offset-h, setting left and right offsets to that value") {
+    @include should(
+      expect(
+        pos-parse-offsets(offset-h 10px)
+      ),
+      to( equal(
+        ( left: 10px, right: 10px )
+      ))
+    );
+  }
+
+  @include it("should parse keyword offset-v, setting left and right offsets to that value") {
+    @include should(
+      expect(
+        pos-parse-offsets(offset-v 10px)
+      ),
+      to( equal(
+        ( top: 10px, bottom: 10px )
+      ))
+    );
+  }
+
+  // Offset Keywords
+  // -----------------------------------------------------------------------------------------------
+
+  @include it("should parse keyword fill, setting all offsets to zero") {
+    @include should(
+      expect(
+        pos-parse-offsets(fill)
+      ),
+      to( equal(
+        ( top: 0, left: 0, bottom: 0, right: 0 )
+      ))
+    );
+  }
+
+  @include it("should parse keyword fill-h, setting left and right offsets to zero") {
+    @include should(
+      expect(
+        pos-parse-offsets(fill-h)
+      ),
+      to( equal(
+        ( left: 0, right: 0 )
+      ))
+    );
+  }
+
+  @include it("should parse keyword fill-v, setting left and right offsets to zero") {
+    @include should(
+      expect(
+        pos-parse-offsets(fill-v)
+      ),
+      to( equal(
+        ( top: 0, bottom: 0 )
+      ))
+    );
+  }
+
+  // Errors
+  // -----------------------------------------------------------------------------------------------
+
+  @include it("should throw an error if a value is an unsupported unitless value") {
+    @include reset-errors();
+    $result: pos-parse-offsets(left 10);
+    @include should(
+      expect(
+        $pos-last-error
+      ),
+      to( equal(
+        $pos-error-offset-parse-error
+      ))
+    );
+  }
+
+  @include it("should throw an error if no value is supplied for a keyword that requires a value") {
+    @include reset-errors();
+    $result: pos-parse-offsets(offset);
+    @include should(
+      expect(
+        $pos-last-error
+      ),
+      to( equal(
+        $pos-error-offset-parse-error
+      ))
+    );
+  }
+
+  @include it("should throw an error if a value follows a keyword that doesnt accept a value") {
+    @include reset-errors();
+    $result: pos-parse-offsets(fill 10px);
+    @include should(
+      expect(
+        $pos-last-error
+      ),
+      to( equal(
+        $pos-error-offset-parse-error
+      ))
+    );
+  }
+
+  // Precidence
+  // -----------------------------------------------------------------------------------------------
+
+  @include it("should evaluate offsets from left to right with later values overwriting previous") {
+    @include should(
+      expect(
+        pos-parse-offsets(fill offset-h 10px right bottom 30px)
+      ),
+      to( equal(
+        ( top: 0, bottom: 30px, left: 10px, right: 0 )
+      ))
+    );
+  }
+
+}
