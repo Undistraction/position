@@ -6,16 +6,25 @@ This project takes Hugo Giraudel's [mixin](http://hugogiraudel.com/2014/05/19/ne
 
 ## Docs
 
-You can view the docs online [here](http://undistraction.github.io/position/docs/) or locally in Chrome by running the following:
+You can view the docs online [here](http://undistraction.github.io/position/docs/) or locally in Chrome by running:
 
 ```
-$ sh docs.sh
+$ grunt docs
 ```
 
-There is also a shell file to build the docs and open them in Chrome:
+There is also a Grunt task to build the docs:
 
 ```
-$ sh docs-build.sh
+$ grunt sassdoc
+```
+
+## Tests
+
+Tests are available from the excellent [Bootcamp](https://github.com/thejameskyle/bootcamp) and can
+be run using:
+
+```
+$ grunt test
 ```
 
 ## API
@@ -73,10 +82,14 @@ Renders:
 
 ### Offset keywords
 
-Offset keywords allow you to set offsets to a given value:
+Offset keywords allow you to set offsets to a given value. *Note: `all` is aliased to `offset`:
 
 ```
 .Example-with-offset {
+  @include absolute(offset 2rem);
+}
+
+.Example-with-all {
   @include absolute(offset 2rem);
 }
 
@@ -93,6 +106,14 @@ Renders:
 
 ```
 .Example-with-offset {
+  position: absolute;
+  top: 2rem;
+  bottom: 2rem;
+  left: 2rem;
+  right: 2rem;
+}
+
+.Example-with-all {
   position: absolute;
   top: 2rem;
   bottom: 2rem;
