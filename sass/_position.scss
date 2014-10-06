@@ -96,6 +96,6 @@
  * @output Outputs the position property
  * @see {mixin} position
  */
-@mixin relative() {
+@mixin static() {
   @include position(relative, $args);
 }
