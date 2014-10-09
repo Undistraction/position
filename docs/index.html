@@ -8,7 +8,7 @@
   
   <meta charset="utf-8" />
 
-<title>SassDoc - v0.1.4</title>
+<title>SassDoc - v0.1.5</title>
 <link rel="stylesheet" href="assets/css/main.css" />
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
 <meta name="viewport" content="width=device-width">
@@ -26,7 +26,7 @@
   <div class="sidebar__header">
   <h1 class="sidebar__title">
     
-      <a href="https://github.com/Undistraction/Position">SassDoc - v0.1.4</a>
+      <a href="https://github.com/Undistraction/Position">SassDoc - v0.1.5</a>
     
   </h1>
 </div>
@@ -329,7 +329,7 @@
     data-collapsed="@function pos-throw-error($error, $message) { ... }"><code>@function pos-throw-error($error, $message) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L23-L30" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L22-L29" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -509,10 +509,10 @@ with the error saved to <code>$pos-last-error</code> instead so tests can check 
   // Offsets acts as our model. We use the args to adjust its
   // values and untimately use it to render.
   $offsets: (
-    &quot;top&quot;: null,
-    &quot;right&quot;: null,
-    &quot;bottom&quot;: null,
-    &quot;left&quot;: null
+    top: null,
+    right: null,
+    bottom: null,
+    left: null
   );
 
   // If a keyword accepted a value and it was present $skip will be set to true so
@@ -588,7 +588,7 @@ with the error saved to <code>$pos-last-error</code> instead so tests can check 
     data-collapsed="@function pos-parse-offsets($args) { ... }"><code>@function pos-parse-offsets($args) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L39-L119" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L38-L118" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -753,7 +753,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-validate-position($value) { ... }"><code>@function pos-validate-position($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L127-L129" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L126-L128" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -918,7 +918,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-is-valid-value($value) { ... }"><code>@function pos-is-valid-value($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L137-L141" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L136-L140" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1079,7 +1079,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-is-keyword($value) { ... }"><code>@function pos-is-keyword($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L148-L150" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L147-L149" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1242,7 +1242,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-is-valid-unitless($value) { ... }"><code>@function pos-is-valid-unitless($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L158-L160" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L157-L159" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1400,12 +1400,12 @@ to an object of offset values.</p>
   <pre class="item__code  item__code--togglable  language-scss"
     data-current-state="collapsed"
     data-expanded="@function pos-is-number_with_unit($value) { 
-  @return (type-of($value) == &quot;number&quot; and not unitless($value));
+  @return (type-of($value) == number and not unitless($value));
  }"
     data-collapsed="@function pos-is-number_with_unit($value) { ... }"><code>@function pos-is-number_with_unit($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L168-L170" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L167-L169" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1563,12 +1563,12 @@ to an object of offset values.</p>
   <pre class="item__code  item__code--togglable  language-scss"
     data-current-state="collapsed"
     data-expanded="@function pos-is-calc($value) { 
- @return str-slice($value + &quot;&quot;, 1, 4) == &quot;calc&quot;;
+ @return str-slice($value + &quot;&quot;, 1, 4) == calc;
  }"
     data-collapsed="@function pos-is-calc($value) { ... }"><code>@function pos-is-calc($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L178-L180" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L177-L179" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1737,18 +1737,18 @@ to an object of offset values.</p>
     data-current-state="collapsed"
     data-expanded="@function pos-parse-offsets-for-always-valueless($offsets, $item) { 
   // Horizontal Fill
-  @if $item == &quot;fill-h&quot; or $item == &quot;fill&quot;  {
+  @if $item == fill-h or $item == fill  {
     $offsets: map-merge($offsets, (
-      &quot;left&quot;: 0,
-      &quot;right&quot;: 0
+      left: 0,
+      right: 0
     ));
   }
 
   // Vertical Fill
-  @if $item == &quot;fill-v&quot; or $item == &quot;fill&quot; {
+  @if $item == fill-v or $item == fill {
     $offsets: map-merge($offsets, (
-      &quot;top&quot;: 0,
-      &quot;bottom&quot;: 0
+      top: 0,
+      bottom: 0
     ));
   }
 
@@ -1757,7 +1757,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-parse-offsets-for-always-valueless($offsets, $item) { ... }"><code>@function pos-parse-offsets-for-always-valueless($offsets, $item) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L189-L207" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L188-L206" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1953,17 +1953,17 @@ to an object of offset values.</p>
     data-current-state="collapsed"
     data-expanded="@function pos-parse-offsets-for-always-value($offsets, $item, $item) { 
 
-  @if $item == &quot;offset-h&quot; or $item == &quot;offset&quot; or $item == &quot;all&quot; {
+  @if $item == offset-h or $item == offset or $item == all {
     $offsets: map-merge($offsets, (
-      &quot;left&quot;: $value,
-      &quot;right&quot;: $value
+      left: $value,
+      right: $value
     ));
   }
 
-  @if $item == &quot;offset-v&quot; or $item == &quot;offset&quot; or $item == &quot;all&quot; {
+  @if $item == offset-v or $item == offset or $item == all {
     $offsets: map-merge($offsets, (
-      &quot;top&quot;: $value,
-      &quot;bottom&quot;: $value
+      top: $value,
+      bottom: $value
     ));
   }
 
@@ -1972,7 +1972,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-parse-offsets-for-always-value($offsets, $item, $item) { ... }"><code>@function pos-parse-offsets-for-always-value($offsets, $item, $item) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L217-L234" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L216-L233" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -3112,7 +3112,7 @@ zero. <code>fill-h</code> will set the <code>left</code> and <code>right</code> 
     data-collapsed="@mixin pos-render($position, $args) { ... }"><code>@mixin pos-render($position, $args) { ... }</code></pre>
 
   
-    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L242-L250" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/SassDoc/sassdoc/position/_support.scss#L241-L249" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -3263,7 +3263,7 @@ zero. <code>fill-h</code> will set the <code>left</code> and <code>right</code> 
           
 
           <!-- Version -->
-          <span class="project-info__version"> - v0.1.4</span>
+          <span class="project-info__version"> - v0.1.5</span>
 
           <!-- License -->
           
