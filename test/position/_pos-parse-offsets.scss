@@ -1,5 +1,3 @@
-@import "support/reset-errors";
-
 @include describe("pos-parse-offsets") {
 
   // Individual Offsets
@@ -110,48 +108,6 @@
     );
   }
 
-  // Errors
-  // -----------------------------------------------------------------------------------------------
-
-  @include it("should throw an error if a value is an unsupported unitless value") {
-    @include reset-errors();
-    $result: pos-parse-offsets(left 10);
-    @include should(
-      expect(
-        $pos-last-error
-      ),
-      to( equal(
-        $pos-error-offset-parse-error
-      ))
-    );
-  }
-
-  @include it("should throw an error if no value is supplied for a keyword that requires a value") {
-    @include reset-errors();
-    $result: pos-parse-offsets(offset);
-    @include should(
-      expect(
-        $pos-last-error
-      ),
-      to( equal(
-        $pos-error-offset-parse-error
-      ))
-    );
-  }
-
-  @include it("should throw an error if a value follows a keyword that doesnt accept a value") {
-    @include reset-errors();
-    $result: pos-parse-offsets(fill 10px);
-    @include should(
-      expect(
-        $pos-last-error
-      ),
-      to( equal(
-        $pos-error-offset-parse-error
-      ))
-    );
-  }
-
   // Precidence
   // -----------------------------------------------------------------------------------------------
 
@@ -166,4 +122,51 @@
     );
   }
 
+  // Errors
+  // -----------------------------------------------------------------------------------------------
+
+  @include describe("if a value is an unsupported unitless value") {
+    @include it("should throw an error") {
+      @include reset-errors();
+      $result: pos-parse-offsets(left 10);
+      @include should(
+        expect(
+          $pos-last-error
+        ),
+        to( equal(
+          $pos-error-offset-parse-error
+        ))
+      );
+    }
+  }
+
+  @include describe("if no value is supplied for a keyword that requires a value") {
+    @include it("should throw an error") {
+      @include reset-errors();
+      $result: pos-parse-offsets(offset);
+      @include should(
+        expect(
+          $pos-last-error
+        ),
+        to( equal(
+          $pos-error-offset-parse-error
+        ))
+      );
+    }
+  }
+
+  @include describe("if a value follows a keyword that doesnt accept a value") {
+    @include it("should throw an error") {
+      @include reset-errors();
+      $result: pos-parse-offsets(fill 10px);
+      @include should(
+        expect(
+          $pos-last-error
+        ),
+        to( equal(
+          $pos-error-offset-parse-error
+        ))
+      );
+    }
+  }
 }

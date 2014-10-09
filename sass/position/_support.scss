@@ -7,7 +7,6 @@ $pos-valid-unitless-values: "auto" "initial" "inherit" 0;
 $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
 
 // Errors
-$pos-error-invalid-position-value: "Invalid Position Value";
 $pos-error-offset-parse-error: "Offset Parse Error";
 $pos-last-error: null;
 $pos-under-test: false;
