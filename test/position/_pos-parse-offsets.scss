@@ -108,6 +108,34 @@
     );
   }
 
+  // Supported Unitless values
+  // -----------------------------------------------------------------------------------------------
+
+  @each $value in $pos-valid-unitless-values {
+    @include it("should support the unitless value") {
+      @include should(
+          expect(
+            pos-parse-offsets(top $value)
+          ),
+          to( equal(
+            ( top: $value )
+          ))
+        );
+    }
+  }
+
+  @include it("should support calc") {
+    @include should(
+        expect(
+          pos-parse-offsets(top calc(1%+2px))
+        ),
+        to( equal(
+          ( top: calc(1%+2px) )
+        ))
+      );
+  }
+
+
   // Precidence
   // -----------------------------------------------------------------------------------------------
 
