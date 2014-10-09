@@ -1,9 +1,9 @@
 // Keywords
-$pos-accepted-position-values: "fixed" "absolute" "relative" "static";
-$pos-always-valueless: "fill" "fill-h" "fill-v";
-$pos-always-value: "offset" "offset-h" "offset-v" "all";
-$pos-support-valueless: "left" "right" "top" "bottom";
-$pos-valid-unitless-values: "auto" "initial" "inherit" 0;
+$pos-accepted-position-values: fixed absolute relative static;
+$pos-always-valueless: fill fill-h fill-v;
+$pos-always-value: offset offset-h offset-v all;
+$pos-support-valueless: left right top bottom;
+$pos-valid-unitless-values: auto initial inherit 0;
 $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
 
 // Errors
@@ -40,10 +40,10 @@ $pos-under-test: false;
   // Offsets acts as our model. We use the args to adjust its
   // values and untimately use it to render.
   $offsets: (
-    "top": null,
-    "right": null,
-    "bottom": null,
-    "left": null
+    top: null,
+    right: null,
+    bottom: null,
+    left: null
   );
 
   // If a keyword accepted a value and it was present $skip will be set to true so
@@ -165,7 +165,7 @@ $pos-under-test: false;
  * @access private
  */
 @function pos-is-number_with_unit($value) {
-  @return (type-of($value) == "number" and not unitless($value));
+  @return (type-of($value) == number and not unitless($value));
 }
 
 /**
@@ -175,7 +175,7 @@ $pos-under-test: false;
  * @access private
  */
 @function pos-is-calc($value) {
- @return str-slice($value + "", 1, 4) == "calc";
+ @return str-slice($value + "", 1, 4) == calc;
 }
 
 /**
@@ -187,18 +187,18 @@ $pos-under-test: false;
  */
 @function pos-parse-offsets-for-always-valueless($offsets, $item) {
   // Horizontal Fill
-  @if $item == "fill-h" or $item == "fill"  {
+  @if $item == fill-h or $item == fill  {
     $offsets: map-merge($offsets, (
-      "left": 0,
-      "right": 0
+      left: 0,
+      right: 0
     ));
   }
 
   // Vertical Fill
-  @if $item == "fill-v" or $item == "fill" {
+  @if $item == fill-v or $item == fill {
     $offsets: map-merge($offsets, (
-      "top": 0,
-      "bottom": 0
+      top: 0,
+      bottom: 0
     ));
   }
 
@@ -215,17 +215,17 @@ $pos-under-test: false;
  */
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
 
-  @if $item == "offset-h" or $item == "offset" or $item == "all" {
+  @if $item == offset-h or $item == offset or $item == all {
     $offsets: map-merge($offsets, (
-      "left": $value,
-      "right": $value
+      left: $value,
+      right: $value
     ));
   }
 
-  @if $item == "offset-v" or $item == "offset" or $item == "all" {
+  @if $item == offset-v or $item == offset or $item == all {
     $offsets: map-merge($offsets, (
-      "top": $value,
-      "bottom": $value
+      top: $value,
+      bottom: $value
     ));
   }
 
