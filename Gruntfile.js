@@ -93,7 +93,7 @@ module.exports = function(grunt) {
         updateConfigs: ['pkg'],
         commit: true,
         commitMessage: 'version: Bump to %VERSION%',
-        commitFiles: ['package.json', 'bower.json', 'docs/*'],
+        commitFiles: ['package.json', 'bower.json', 'docs/*', 'dist/*'],
         createTag: true,
         tagName: '%VERSION%',
         tagMessage: 'Version %VERSION%',
@@ -111,6 +111,6 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', ['test', 'watch']);
   grunt.registerTask('build', ['test', 'sassdoc', 'concat']);
   grunt.registerTask('docs', ['sassdoc', 'open:docs']);
-  grunt.registerTask('patch', ['bump-only:patch', 'sassdoc', 'bump-commit']);
-  grunt.registerTask('minor', ['bump-only:minor', 'sassdoc', 'bump-commit']);
+  grunt.registerTask('patch', ['bump-only:patch', 'sassdoc', 'build', 'bump-commit']);
+  grunt.registerTask('minor', ['bump-only:minor', 'sassdoc', 'build', 'bump-commit']);
 };
