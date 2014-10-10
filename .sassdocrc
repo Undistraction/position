@@ -8,10 +8,10 @@
   "package": "./package.json",
 
   "groups": {
-    "undefined": "Position"
+    "undefined": "Private",
+    "api": "API"
   },
 
   "theme": "default",
-
-  "basePath": "https://github.com/SassDoc/sassdoc"
+  "basePath": "https://github.com/Undistraction/position"
 }
