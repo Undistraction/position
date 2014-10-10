@@ -78,15 +78,14 @@ $pos-error-thrown: false;
         } @else {
           $error: pos-throw-error( $pos-unsupported-value-error, "`#{$item}` doesn't support a value but found: `#{$next-item}`.");
         }
-
-      // Ensure there is a following value and that it is not unitless
+      // Handle keyword that must have a value
       } @else if index($pos-always-value, $item) {
         // Do we have a united next item?
-        @if not $is-last-item and pos-is-valid-value($next-item) {
+        @if not ( $is-last-item or pos-is-keyword($next-item) ) {
           $skip: true;
           $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
         } @else {
-
+          // Handle errors
           @if $next-item {
             $error: pos-throw-error( $pos-invalid-value-error, "`#{$item}` should be followed by a valid value, yet it was `#{$next-item}`.");
           } @else {
@@ -94,7 +93,7 @@ $pos-error-thrown: false;
           }
 
         }
-
+      // Handle keyword that might have a value
       } @else if index($pos-support-valueless, $item) {
 
         // Is the next item is a valid value?
@@ -103,9 +102,15 @@ $pos-error-thrown: false;
         @if $is-last-item or pos-is-keyword($next-item) {
           // Value is unitless
           $value: 0;
-        } @else if pos-is-valid-value($next-item){
+        } @else {
           // Value is valid unit
           $skip: true;
+
+          @if pos-should-parse-value($next-item) {
+            $orientation: pos-orientation-for-support-valueless($item);
+            $next-item: pos-parse-value-filter($next-item, $orientation)
+          }
+
           $value: $next-item;
         } @else {
           $error: pos-throw-error( $pos-invalid-value-error, "`#{$item}` was followed by an invalid value; `{$value}`");
@@ -141,6 +146,13 @@ $pos-error-thrown: false;
  */
 @function pos-validate-position($value){
   @return not not index($pos-accepted-position-values, $value);
+}
+
+// Does the value need to be parsed ?
+@function pos-should-parse-value($value) {
+  @return not( pos-is-number-with-unit($value)
+            or pos-is-valid-unitless($value)
+            or pos-is-calc($value));
 }
 
 /**
@@ -231,7 +243,15 @@ $pos-error-thrown: false;
  */
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
 
+  // Do we need to parse each value?
+  $parse-value: pos-should-parse-value($value);
+
   @if $item == offset-h or $item == offset or $item == all {
+
+    @if $parse-value {
+      $value: pos-parse-value-filter($next-item, horizontal);
+    }
+
     $offsets: map-merge($offsets, (
       left: $value,
       right: $value
@@ -239,6 +259,11 @@ $pos-error-thrown: false;
   }
 
   @if $item == offset-v or $item == offset or $item == all {
+
+    @if $parse-value {
+      $value: pos-parse-value-filter($next-item, vertical);
+    }
+
     $offsets: map-merge($offsets, (
       top: $value,
       bottom: $value
@@ -248,8 +273,29 @@ $pos-error-thrown: false;
   @return $offsets;
 }
 
+/**
+ * Overridable hook to handle unrecognised values. By default it will throw an error.
+ * @param {String} $value an unrecognised value
+ * @param {orientation} The orientation of the keyword
+ * @throws $pos-unsupported-value-error
+ * @access private
+ */
 @function pos-parse-value-filter($value, $orientation) {
-  @return ps-throw-error($pos-unsupported-value-error, "Unsupported value #{$value}");
+  @return pos-throw-error($pos-invalid-value-error, "Invalid value #{$value}");
+}
+
+/**
+ * Get the orientation for a valueless item
+ * @param {String} $item An item from $pos-support-valueless list
+ * @return Orientation (horizontal or vertical)
+ * @access private
+ */
+@function pos-orientation-for-support-valueless($item) {
+  @if $item == left or $item == right {
+    @return horizontal;
+  } @else {
+    @return vertical;
+  }
 }
 
 /**
@@ -267,3 +313,4 @@ $pos-error-thrown: false;
     #{$offset}: #{$offset-value};
   }
 }
+
