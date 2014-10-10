@@ -2,7 +2,7 @@
 
 A set of mixins for handling position and offsets.
 
-This project takes Hugo Giraudel's [mixin](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/) and adds some nice features.
+This project takes Hugo Giraudel's [mixin](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/) and adds some nice features including new keywords and support for custom units.
 
 ## Docs
 
