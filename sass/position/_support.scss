@@ -285,9 +285,9 @@ $pos-error-thrown: false;
 }
 
 /**
- * Get the orientation for a valueless item
+ * Get the orientation for a valueless item.
  * @param {String} $item An item from $pos-support-valueless list
- * @return Orientation (horizontal or vertical)
+ * @returns {String} Orientation (vertical | horizontal)
  * @access private
  */
 @function pos-orientation-for-support-valueless($item) {
@@ -299,7 +299,7 @@ $pos-error-thrown: false;
 }
 
 /**
- * Render offsets to CSS properties
+ * Render offsets to CSS properties.
  * @param {String} $position One of absolute | relative | fixed.
  * @param {List} $args A list of offset keywords and values.
  * @access private
@@ -313,4 +313,3 @@ $pos-error-thrown: false;
     #{$offset}: #{$offset-value};
   }
 }
-
