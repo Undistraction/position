@@ -178,6 +178,32 @@ Renders:
 }
 ```
 
+## Using custom values
+
+Position includes a hook; a function called `pos-parse-value-filter` which is passed two parameters; a value and an orientation (either horizontal or vertical). This hook will be called
+when position comes across a value it doesn't know how to handle. By default this function throws
+an error, but you can override this function and implement custom handling.
+
+For example, if you want to use keywords to represent different sets of units to enforce consistancy, you could do this:
+
+```
+$custom-units-map: (
+  single: 10px,
+  double: 20px,
+  triple: 30px
+);
+
+@function pos-parse-value-filter($value, $orientation){
+  @if map-has-key($custom-units-map, $value) {
+    @return map-get($custom-units-map, $value);
+  } @else {
+    @return pos-throw-error($pos-invalid-value-error, "Invalid value #{$value}");
+  }
+}
+```
+
+This feature will become very powerful when I add support for media queries.
+
 ## Dependencies & Compatability
 
 It has no dependencies on other Sass libs and should work with Sass 3.3 and up, though it's currently only tested in 3.4.
