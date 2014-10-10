@@ -1,0 +1,14 @@
+// Define a map of units
+$custom-units-map: (
+  single: 11px,
+  double: 22px,
+  triple: 33px
+);
+
+@function pos-parse-value-filter($value, $orientation){
+  @if map-has-key($custom-units-map, $value) {
+    @return map-get($custom-units-map, $value);
+  } @else {
+    @return pos-throw-error($pos-invalid-value-error, "Invalid value #{$value}");
+  }
+}

@@ -182,33 +182,33 @@
     }
   }
 
-  // @include describe("if no value is supplied for a keyword that requires a value") {
-  //   @include it("should throw a missing-value-error error") {
-  //     @include reset-errors();
-  //     $result: pos-parse-offsets(offset);
-  //     @include should(
-  //       expect(
-  //         $pos-last-error
-  //       ),
-  //       to( equal(
-  //         $pos-missing-value-error
-  //       ))
-  //     );
-  //   }
-  // }
+  @include describe("if no value is supplied for a keyword that requires a value") {
+    @include it("should throw a missing-value-error error") {
+      @include reset-errors();
+      $result: pos-parse-offsets(offset);
+      @include should(
+        expect(
+          $pos-last-error
+        ),
+        to( equal(
+          $pos-missing-value-error
+        ))
+      );
+    }
+  }
 
-  // @include describe("if a value follows a keyword that doesnt accept a value") {
-  //   @include it("should throw a pos-unsupported-value-error error") {
-  //     @include reset-errors();
-  //     $result: pos-parse-offsets(fill 10px);
-  //     @include should(
-  //       expect(
-  //         $pos-last-error
-  //       ),
-  //       to( equal(
-  //         $pos-unsupported-value-error
-  //       ))
-  //     );
-  //   }
-  // }
+  @include describe("if a value follows a keyword that doesnt accept a value") {
+    @include it("should throw a pos-unsupported-value-error error") {
+      @include reset-errors();
+      $result: pos-parse-offsets(fill 10px);
+      @include should(
+        expect(
+          $pos-last-error
+        ),
+        to( equal(
+          $pos-unsupported-value-error
+        ))
+      );
+    }
+  }
 }

@@ -1,0 +1,35 @@
+// Override the pos-parse-value-filter function
+@import 'support/filter-fixtures';
+
+@include describe("pos-parse-offsets with filter function overriden") {
+
+  @include it("should parse custom units using the overriding filter function") {
+    @include should(
+      expect(
+        pos-parse-offsets(top single bottom double offset-h triple)
+      ),
+      to( equal(
+        ( top: 11px, left: 33px, bottom: 22px, right: 33px )
+      ))
+    );
+  }
+
+  // Errors
+  // -----------------------------------------------------------------------------------------------
+
+  @include describe("if a value is an invalid unitless value") {
+    @include it("should throw a pos-invalid-value-error") {
+      @include reset-errors();
+      $result: pos-parse-offsets(left unspported);
+      @include should(
+        expect(
+          $pos-last-error
+        ),
+        to( equal(
+          $pos-invalid-value-error
+        ))
+      );
+    }
+  }
+
+}
