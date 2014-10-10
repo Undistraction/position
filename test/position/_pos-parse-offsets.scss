@@ -135,7 +135,6 @@
       );
   }
 
-
   // Precidence
   // -----------------------------------------------------------------------------------------------
 
@@ -153,8 +152,23 @@
   // Errors
   // -----------------------------------------------------------------------------------------------
 
-  @include describe("if a value is an unsupported unitless value") {
-    @include it("should throw an error") {
+  @include describe("if a keyword is unsupported") {
+    @include it("should throw an unsupported-keyword-error") {
+      @include reset-errors();
+      $result: pos-parse-offsets(xxx);
+      @include should(
+        expect(
+          $pos-last-error
+        ),
+        to( equal(
+          $pos-invalid-keyword-error
+        ))
+      );
+    }
+  }
+
+  @include describe("if a value is an invalid unitless value") {
+    @include it("should throw a pos-unsupported-value-error") {
       @include reset-errors();
       $result: pos-parse-offsets(left 10);
       @include should(
@@ -162,14 +176,14 @@
           $pos-last-error
         ),
         to( equal(
-          $pos-error-offset-parse-error
+          $pos-invalid-value-error
         ))
       );
     }
   }
 
   @include describe("if no value is supplied for a keyword that requires a value") {
-    @include it("should throw an error") {
+    @include it("should throw a missing-value-error error") {
       @include reset-errors();
       $result: pos-parse-offsets(offset);
       @include should(
@@ -177,7 +191,7 @@
           $pos-last-error
         ),
         to( equal(
-          $pos-error-offset-parse-error
+          $pos-missing-value-error
         ))
       );
     }
@@ -192,7 +206,7 @@
           $pos-last-error
         ),
         to( equal(
-          $pos-error-offset-parse-error
+          $pos-unsupported-value-error
         ))
       );
     }

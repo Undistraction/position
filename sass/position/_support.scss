@@ -7,9 +7,13 @@ $pos-valid-unitless-values: auto initial inherit 0;
 $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
 
 // Errors
-$pos-error-offset-parse-error: "Offset Parse Error";
+$pos-invalid-value-error: "Invalid Value Error";
+$pos-missing-value-error: "Missing Value Error";
+$pos-unsupported-value-error: "Unsupported Value Error";
+$pos-invalid-keyword-error: "Invalid Keyword Error";
 $pos-last-error: null;
 $pos-under-test: false;
+$pos-error-thrown: false;
 
 /**
  * By default, this function will throw a Sass error, but allows errors to be stopped during testing,
@@ -21,7 +25,10 @@ $pos-under-test: false;
  */
 @function pos-throw-error($error, $message) {
   @if $pos-under-test {
-    $pos-last-error: $error !global;
+    @if not $pos-error-thrown {
+      $pos-error-thrown: true !global;
+      $pos-last-error: $error !global;
+    }
   } @else {
     @error "#{$error} #{$message}";
   }
@@ -69,7 +76,7 @@ $pos-under-test: false;
         @if $is-last-item or pos-is-keyword($next-item) {
           $offsets: pos-parse-offsets-for-always-valueless($offsets, $item);
         } @else {
-          $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` cannot be followed by a value, yet one has been found: `#{$next-item}`.");
+          $error: pos-throw-error( $pos-unsupported-value-error, "`#{$item}` doesn't support a value but found: `#{$next-item}`.");
         }
 
       // Ensure there is a following value and that it is not unitless
@@ -79,25 +86,34 @@ $pos-under-test: false;
           $skip: true;
           $offsets: pos-parse-offsets-for-always-value($offsets, $item, $next-item);
         } @else {
-          $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` should be followed by a valid value, yet it was `#{$next-item}`.");
+
+          @if $next-item {
+            $error: pos-throw-error( $pos-invalid-value-error, "`#{$item}` should be followed by a valid value, yet it was `#{$next-item}`.");
+          } @else {
+            $error: pos-throw-error( $pos-missing-value-error, "`#{$item}` should be followed by a valid value, but none was supplied.");
+          }
+
         }
 
       } @else if index($pos-support-valueless, $item) {
+
         // Is the next item is a valid value?
         $value: null;
 
-        @if not $is-last-item and pos-is-valid-value($next-item) {
+        @if $is-last-item or pos-is-keyword($next-item) {
+          // Value is unitless
+          $value: 0;
+        } @else if pos-is-valid-value($next-item){
+          // Value is valid unit
           $skip: true;
           $value: $next-item;
-
-        // Otherwise treat as having a value of zero
         } @else {
-          $value: 0;
+          $error: pos-throw-error( $pos-invalid-value-error, "`#{$item}` was followed by an invalid value; `{$value}`");
         }
 
         $offsets: map-merge($offsets, ($item: $value));
       } @else {
-        $error: pos-throw-error( $pos-error-offset-parse-error, "`#{$item}` is not a valid keyword.");
+        $error: pos-throw-error( $pos-invalid-keyword-error, "`#{$item}` is not a valid keyword.");
       }
 
     } @else {
@@ -230,6 +246,10 @@ $pos-under-test: false;
   }
 
   @return $offsets;
+}
+
+@function pos-parse-value-filter($value, $orientation) {
+  @return ps-throw-error($pos-unsupported-value-error, "Unsupported value #{$value}");
 }
 
 /**
