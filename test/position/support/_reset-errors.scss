@@ -1,4 +1,5 @@
 @mixin reset-errors() {
   $pos-last-error: null !global;
   $pos-under-test: true !global;
+  $pos-error-thrown: false !global;
 }
