@@ -112,5 +112,5 @@ module.exports = function(grunt) {
   grunt.registerTask('build', ['test', 'sassdoc', 'concat']);
   grunt.registerTask('docs', ['sassdoc', 'open:docs']);
   grunt.registerTask('patch', ['bump-only:patch', 'sassdoc', 'bump-commit']);
-  grunt.registerTask('minor', ['bump-only:patch', 'sassdoc', 'bump-commit']);
+  grunt.registerTask('minor', ['bump-only:minor', 'sassdoc', 'bump-commit']);
 };
