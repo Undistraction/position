@@ -3,7 +3,9 @@
 /**
  * Mixins for setting an elements position and offsets based on the original mixin by Hugo
  * Giraudel found [here](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/)
+ *
  * @author Pedr Browne
+ * @group API
  **/
 
 /**
@@ -25,7 +27,7 @@
  *    zero. `fill-h` will set the `left` and `right` offsets to zero, and `fill-v` will set the
  *    `top` and `bottom` offsets to zero.
  *
- *  Values are evaluated from left to right with later values overriding earlier values.
+ *  Values are evaluated LTR with later values overriding earlier values.
  *
  * @example scss - Usage
  *   .element {
@@ -39,15 +41,18 @@
  *     top: 10px;
  *   }
  *
- * @throws Argument Error
- * @output Outputs the position property and any given offset properties
+ * @throws
+ *  Argument Error
+ *
+ * @output
+ *  Outputs the position property and any given offset properties
  */
 @mixin position($position, $args:null) {
 
   $offsets: ();
 
   // Check position is a supported value
-  @if not pos-validate-position($position) {
+  @if not pos-position-is-valid($position) {
     $error: pos-throw-error( $pos-error-invalid-position,  "#{$position} is not a valid value for `position`" );
   }
 
@@ -63,8 +68,13 @@
 
 /**
  * Shorthand for `@include position(absolute, args)`.
- * @param {List} $args A list of offset keywords and values.
- * @output Outputs the position property and any given offset properties
+ *
+ * @param {List} $args
+ *  A list of offset keywords and values.
+ *
+ * @output
+ *  Outputs the position property and any given offset properties
+ *
  * @see {mixin} position
  */
 @mixin absolute($args: ()) {
@@ -73,8 +83,13 @@
 
 /**
  * Shorthand for `@include position(absolute, args)`.
- * @param {List} $args A list of offset keywords and values.
- * @output Outputs the position property and any given offset properties
+ *
+ * @param {List} $args
+ *  A list of offset keywords and values.
+ *
+ * @output
+ *  Outputs the position property and any given offset properties
+ *
  * @see {mixin} position
  */
 @mixin fixed($args: ()) {
@@ -83,8 +98,13 @@
 
 /**
  * Shorthand for `@include position(absolute, args)`.
- * @param {List} $args A list of offset keywords and values.
- * @output Outputs the position property and any given offset properties
+ *
+ * @param {List} $args
+ *  A list of offset keywords and values.
+ *
+ * @output
+ *  Outputs the position property and any given offset properties
+ *
  * @see {mixin} position
  */
 @mixin relative($args: ()) {
@@ -93,7 +113,9 @@
 
 /**
  * Shorthand for `@include position(static)`.
+ *
  * @output Outputs the position property
+ *
  * @see {mixin} position
  */
 @mixin static() {

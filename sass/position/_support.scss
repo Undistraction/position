@@ -1,16 +1,64 @@
-// Keywords
+
+/**
+ *  Values accepted for `position`.
+ *  @access private
+ */
 $pos-accepted-position-values: fixed absolute relative static;
+
+/**
+ *  Keywords that are never followed by a value
+ *  @access private
+ */
 $pos-always-valueless: fill fill-h fill-v;
+
+/**
+ *  Keywords that are always followed by a value
+ *  @access private
+ */
 $pos-always-value: offset offset-h offset-v all;
+
+/**
+ *  Keywords that are sometimes followed by a value
+ *  @access private
+ */
 $pos-support-valueless: left right top bottom;
-$pos-valid-unitless-values: auto initial inherit 0;
+
+/**
+ *  All Keywords
+ *  @access private
+ */
 $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
 
-// Errors
+/**
+ *  Values without a unit that are accepted without being parsed
+ */
+$pos-valid-unitless-values: auto initial inherit 0;
+
+/**
+ *  Error thrown when an item is followed by an invalid value
+ *  @access private
+ */
 $pos-invalid-value-error: "Invalid Value Error";
+
+/**
+ *  Error thrown when an item that needs a value has no following value
+ *  @access private
+ */
 $pos-missing-value-error: "Missing Value Error";
+
+/**
+ *  Error thrown when an item which doesn't support a value has a value following it
+ *  @access private
+ */
 $pos-unsupported-value-error: "Unsupported Value Error";
+
+/**
+ *  Error thrown when an unsupported keyword is used
+ *  @access private
+ */
 $pos-invalid-keyword-error: "Invalid Keyword Error";
+
+// These items are used in test only
 $pos-last-error: null;
 $pos-under-test: false;
 $pos-error-thrown: false;
@@ -18,9 +66,16 @@ $pos-error-thrown: false;
 /**
  * By default, this function will throw a Sass error, but allows errors to be stopped during testing,
  * with the error saved to `$pos-last-error` instead so tests can check it was thrown.
- * @param {String} $error The name of the error
- * @param {String} $message The error message
- * @returns {Map} A map of offsets to be rendered as CSS properties
+ *
+ * @param {String} $error
+ *  The name of the error
+ *
+ * @param {String} $message
+ *  The error message
+ *
+ * @returns {Map}
+ *  A map of offsets to be rendered as CSS properties
+ *
  * @access private
  */
 @function pos-throw-error($error, $message) {
@@ -38,8 +93,18 @@ $pos-error-thrown: false;
 /**
  * This is the workhorse function, taking a list of offset keywords and values and parsing them
  * to an object of offset values.
- * @param {List} $args A list of offset keywords and values
- * @returns {Map} A map of offsets to be rendered as CSS properties
+ *
+ * @param {List} $args
+ *  A list of offset keywords and values
+ *
+ * @returns {Map}
+ *  A map of offsets to be rendered as CSS properties
+ *
+ * @throws $pos-unsupported-value-error
+ * @throws $pos-invalid-value-error
+ * @throws $pos-missing-value-error
+ * @throws $pos-invalid-keyword-error
+ *
  * @access private
  */
 @function pos-parse-offsets($args) {
@@ -106,7 +171,7 @@ $pos-error-thrown: false;
           // Value is valid unit
           $skip: true;
 
-          @if pos-should-parse-value($next-item) {
+          @if not pos-is-valid-value($next-item) {
             $orientation: pos-orientation-for-support-valueless($item);
             $next-item: pos-parse-value-filter($next-item, $orientation)
           }
@@ -140,26 +205,27 @@ $pos-error-thrown: false;
 
 /**
  * Determine if the value is a valid value for position
- * @param {String} $value Value to use for $position.
+ *
+ * @param {String} $value
+ *  Value to use for $position.
+ *
  * @returns {Bool}
+ *  Was the position valid?
+ *
  * @access private
  */
-@function pos-validate-position($value){
+@function pos-position-is-valid($value){
   @return not not index($pos-accepted-position-values, $value);
 }
 
-// Does the value need to be parsed ?
-@function pos-should-parse-value($value) {
-  @return not( pos-is-number-with-unit($value)
-            or pos-is-valid-unitless($value)
-            or pos-is-calc($value));
-}
-
 /**
- * Determine if the given value is valid as an offset value.
- * @param {String} $value Item from offset list.
+ * Was the value a valid one; either united, supported unitless or calc
+ *
+ * @param {String} $value
+ *  The value to be checked
+ *
  * @returns {Bool}
- * @access private
+ *  Was the value valid?
  */
 @function pos-is-valid-value($value) {
   @return pos-is-number-with-unit($value)
@@ -168,9 +234,13 @@ $pos-error-thrown: false;
 }
 
 /**
- * Determine if the value is a known keyword.
- * @param {String} $value Item from offset list.
+ * Determine if the value is a supported keyword.
+ *
+ * @param {String} $value
+ *  Item to be checked
+ *
  * @returns {Bool}
+ *  Was the item a supported keyword?
  */
 @function pos-is-keyword($value) {
   @return not not index($pos-keywords, $value);
@@ -178,8 +248,13 @@ $pos-error-thrown: false;
 
 /**
  * Determine if the value is a valid unitless value.
- * @param {String} $value Item from offset list.
+ *
+ * @param {String} $value
+ *  Value to be checked
+ *
  * @returns {Bool}
+ *  Was the value unitless?
+ *
  * @access private
  */
 @function pos-is-valid-unitless($value) {
@@ -187,19 +262,29 @@ $pos-error-thrown: false;
 }
 
 /**
- * Determine if the value is a number with a unit.
- * @param {String} $value Item from offset list.
+ * Determine if the value is a valid number with a unit
+ *
+ * @param {String} $value
+ *  Value to be checked
+ *
  * @returns {Bool}
+ *  Was the value number with a unit?
+ *
  * @access private
  */
-@function pos-is-number_with_unit($value) {
+@function pos-is-number-with-unit($value) {
   @return (type-of($value) == number and not unitless($value));
 }
 
 /**
  * Determine if the value is a `calc()` expression.
- * @param {String} $value Item from offset list.
+ *
+ * @param {String} $value
+ *  Value to be checked
+ *
  * @returns {Bool}
+ *  Was the value a `calc` expression?
+ *
  * @access private
  */
 @function pos-is-calc($value) {
@@ -207,10 +292,17 @@ $pos-error-thrown: false;
 }
 
 /**
- * Parse keyword to offset values.
- * @param {Map} $offsets Map of offsets to render.
- * @param {String} $item Offset keyword.
- * @returns {Map} Offsets
+ * Parse keyword that is always valueless to offset values.
+ *
+ * @param {Map} $offsets
+ *  Map of offsets to adjust for the given keyword.
+ *
+ * @param {String} $item
+ *  Offset keyword.
+ *
+ * @returns {Map}
+ *  Adjusted Offsets
+ *
  * @access private
  */
 @function pos-parse-offsets-for-always-valueless($offsets, $item) {
@@ -234,22 +326,30 @@ $pos-error-thrown: false;
 }
 
 /**
- * Parse keyword and value to offset values.
- * @param {Map} $offsets Map of offsets to render.
- * @param {String} $item Offset keyword.
+ * Parse keyword that always has a value and its value to offset values.
+ *
+ * @param {Map} $offsets
+ *  Map of offsets to adjust for the given keyword and value.
+ *
+ * @param {String} $item
+ *  Offset keyword.
+ *
  * @param {String} $item Offset value.
- * @returns {Map} Offsets
+ *
+ * @returns {Map}
+ *  Adjusted Offsets
+ *
  * @access private
  */
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
 
   // Do we need to parse each value?
-  $parse-value: pos-should-parse-value($value);
+  $parse-value: not pos-is-valid-value($value);
 
   @if $item == offset-h or $item == offset or $item == all {
 
     @if $parse-value {
-      $value: pos-parse-value-filter($next-item, horizontal);
+      $value: pos-parse-value-filter($value, horizontal);
     }
 
     $offsets: map-merge($offsets, (
@@ -275,9 +375,15 @@ $pos-error-thrown: false;
 
 /**
  * Overridable hook to handle unrecognised values. By default it will throw an error.
- * @param {String} $value an unrecognised value
- * @param {orientation} The orientation of the keyword
+ *
+ * @param {String} $value
+ *  An unrecognised value
+ *
+ * @param {orientation}
+ *  The orientation of the value's keyword (horizontal | vertical)
+ *
  * @throws $pos-unsupported-value-error
+ *
  * @access private
  */
 @function pos-parse-value-filter($value, $orientation) {
@@ -285,9 +391,14 @@ $pos-error-thrown: false;
 }
 
 /**
- * Get the orientation for a valueless item.
- * @param {String} $item An item from $pos-support-valueless list
- * @returns {String} Orientation (vertical | horizontal)
+ * Get the orientation for a valueless keyword
+ *
+ * @param {String} $item
+ *  An item from $pos-support-valueless list
+ *
+ * @returns {String}
+ *  The keyword's orientation (vertical | horizontal)
+ *
  * @access private
  */
 @function pos-orientation-for-support-valueless($item) {
@@ -300,8 +411,13 @@ $pos-error-thrown: false;
 
 /**
  * Render offsets to CSS properties.
- * @param {String} $position One of absolute | relative | fixed.
- * @param {List} $args A list of offset keywords and values.
+ *
+ * @param {String} $position
+ *  The position - One of absolute | fixed | relative | static
+ *.
+ * @param {List} $args
+ *  A map of offset keywords and values.
+ *
  * @access private
  */
 @mixin pos-render($position, $offsets) {
