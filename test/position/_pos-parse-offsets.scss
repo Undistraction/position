@@ -28,26 +28,17 @@
   // Offset Keywords
   // -----------------------------------------------------------------------------------------------
 
-  @include it("should parse keyword offset, setting all offsets to that value") {
-    @include should(
-      expect(
-        pos-parse-offsets(offset 10px)
-      ),
-      to( equal(
-        ( top: 10px, left: 10px, bottom: 10px, right: 10px )
-      ))
-    );
-  }
-
-  @include it("should parse keyword all, setting all offsets to that value") {
-    @include should(
-      expect(
-        pos-parse-offsets(all 10px)
-      ),
-      to( equal(
-        ( top: 10px, left: 10px, bottom: 10px, right: 10px )
-      ))
-    );
+  @each $keyword in offset all {
+    @include it("should parse keyword #{$keyword}, setting all offsets to that value") {
+      @include should(
+        expect(
+          pos-parse-offsets($keyword 10px)
+        ),
+        to( equal(
+          ( top: 10px, left: 10px, bottom: 10px, right: 10px )
+        ))
+      );
+    }
   }
 
   @include it("should parse keyword offset-h, setting left and right offsets to that value") {
@@ -61,7 +52,7 @@
     );
   }
 
-  @include it("should parse keyword offset-v, setting left and right offsets to that value") {
+  @include it("should parse keyword offset-v, setting top and bottom offsets to that value") {
     @include should(
       expect(
         pos-parse-offsets(offset-v 10px)
