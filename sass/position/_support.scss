@@ -1,55 +1,54 @@
 /**
  * @author Pedr Browne
- * @group Support
  * @access private
- */
+ * @group Support
+ **/
 
 // Support
 // -------------------------------------------------------------------------------------------------
 
 /**
- *  Values accepted for `position`.
- *  @group Support
+ * Values accepted for `position`.
  */
 $pos-accepted-position-values: fixed absolute relative static;
 
 /**
- *  Keywords that are never followed by a value
+ * Keywords that are never followed by a value
  */
 $pos-always-valueless: fill fill-h fill-v;
 
 /**
- *  Keywords that are always followed by a value
+ * Keywords that are always followed by a value
  */
 $pos-always-value: offset offset-h offset-v all;
 
 /**
- *  Keywords that are sometimes followed by a value
+ * Keywords that are sometimes followed by a value
  */
 $pos-support-valueless: left right top bottom;
 
 /**
- *  All Keywords
+ * All Keywords
  */
 $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
 
 /**
- *  Values without a unit that are accepted without being parsed
+ * Values without a unit that are accepted without being parsed
  */
 $pos-valid-unitless-values: auto initial inherit 0;
 
 /**
- *  Error thrown when an item that needs a value has no following value
+ * Error thrown when an item that needs a value has no following value
  */
 $pos-missing-value-error: "Missing Value Error";
 
 /**
- *  Error thrown when an item which doesn't support a value has a value following it
+ * Error thrown when an item which doesn't support a value has a value following it
  */
 $pos-unsupported-value-error: "Unsupported Value Error";
 
 /**
- *  Error thrown when an unsupported keyword is used
+ * Error thrown when an unsupported keyword is used
  */
 $pos-invalid-keyword-error: "Invalid Keyword Error";
 
