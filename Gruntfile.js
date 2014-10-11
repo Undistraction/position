@@ -22,12 +22,13 @@ module.exports = function(grunt) {
     // Concat
     concat: {
       options: {
-        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+        separator: '\n\n',
+        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n\n',
       },
       dist: {
         src: [
           '<%= dir.src %>/position/_support.scss',
-          '<%= dir.src %>/_position.scss'
+          '<%= dir.src %>/position/_api.scss'
         ],
         dest: '<%= dir.dist %>/_<%= pkg.name.toLowerCase() %>.scss',
       },
