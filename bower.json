@@ -10,7 +10,7 @@
     "sass"
   ],
   "license": "MIT",
-  "main": "sass/_position.scss",
+  "main": "dist/_position.scss",
   "ignore": [
     "**/.*",
     "node_modules",

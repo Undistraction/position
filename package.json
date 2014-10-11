@@ -2,7 +2,7 @@
   "name": "Position",
   "version": "0.2.3",
   "description": "Mixins for setting an elements position and offsets",
-  "main": "Gruntfile.js",
+  "main": "dist/_position.scss",
   "directories": {
     "doc": "docs"
   },
