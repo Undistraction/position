@@ -1,6 +1,6 @@
-
 /**
  *  Values accepted for `position`.
+ *  @group Support
  *  @access private
  */
 $pos-accepted-position-values: fixed absolute relative static;
@@ -35,12 +35,6 @@ $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-alw
 $pos-valid-unitless-values: auto initial inherit 0;
 
 /**
- *  Error thrown when an item is followed by an invalid value
- *  @access private
- */
-$pos-invalid-value-error: "Invalid Value Error";
-
-/**
  *  Error thrown when an item that needs a value has no following value
  *  @access private
  */
@@ -57,38 +51,6 @@ $pos-unsupported-value-error: "Unsupported Value Error";
  *  @access private
  */
 $pos-invalid-keyword-error: "Invalid Keyword Error";
-
-// These items are used in test only
-$pos-last-error: null;
-$pos-under-test: false;
-$pos-error-thrown: false;
-
-/**
- * By default, this function will throw a Sass error, but allows errors to be stopped during testing,
- * with the error saved to `$pos-last-error` instead so tests can check it was thrown.
- *
- * @param {String} $error
- *  The name of the error
- *
- * @param {String} $message
- *  The error message
- *
- * @returns {Map}
- *  A map of offsets to be rendered as CSS properties
- *
- * @access private
- */
-@function pos-throw-error($error, $message) {
-  @if $pos-under-test {
-    @if not $pos-error-thrown {
-      $pos-error-thrown: true !global;
-      $pos-last-error: $error !global;
-    }
-  } @else {
-    @error "#{$error} #{$message}";
-  }
-  @return null;
-}
 
 /**
  * This is the workhorse function, taking a list of offset keywords and values and parsing them
@@ -219,21 +181,6 @@ $pos-error-thrown: false;
 }
 
 /**
- * Was the value a valid one; either united, supported unitless or calc
- *
- * @param {String} $value
- *  The value to be checked
- *
- * @returns {Bool}
- *  Was the value valid?
- */
-@function pos-is-valid-value($value) {
-  @return pos-is-number-with-unit($value)
-       or pos-is-valid-unitless($value)
-       or pos-is-calc($value);
-}
-
-/**
  * Determine if the value is a supported keyword.
  *
  * @param {String} $value
@@ -244,51 +191,6 @@ $pos-error-thrown: false;
  */
 @function pos-is-keyword($value) {
   @return not not index($pos-keywords, $value);
-}
-
-/**
- * Determine if the value is a valid unitless value.
- *
- * @param {String} $value
- *  Value to be checked
- *
- * @returns {Bool}
- *  Was the value unitless?
- *
- * @access private
- */
-@function pos-is-valid-unitless($value) {
-  @return not not index($pos-valid-unitless-values, $value);
-}
-
-/**
- * Determine if the value is a valid number with a unit
- *
- * @param {String} $value
- *  Value to be checked
- *
- * @returns {Bool}
- *  Was the value number with a unit?
- *
- * @access private
- */
-@function pos-is-number-with-unit($value) {
-  @return (type-of($value) == number and not unitless($value));
-}
-
-/**
- * Determine if the value is a `calc()` expression.
- *
- * @param {String} $value
- *  Value to be checked
- *
- * @returns {Bool}
- *  Was the value a `calc` expression?
- *
- * @access private
- */
-@function pos-is-calc($value) {
- @return str-slice($value + "", 1, 4) == calc;
 }
 
 /**
@@ -374,23 +276,6 @@ $pos-error-thrown: false;
 }
 
 /**
- * Overridable hook to handle unrecognised values. By default it will throw an error.
- *
- * @param {String} $value
- *  An unrecognised value
- *
- * @param {orientation}
- *  The orientation of the value's keyword (horizontal | vertical)
- *
- * @throws $pos-unsupported-value-error
- *
- * @access private
- */
-@function pos-parse-value-filter($value, $orientation) {
-  @return pos-throw-error($pos-invalid-value-error, "Invalid value #{$value}");
-}
-
-/**
  * Get the orientation for a valueless keyword
  *
  * @param {String} $item
@@ -428,4 +313,123 @@ $pos-error-thrown: false;
   @each $offset, $offset-value in $offsets {
     #{$offset}: #{$offset-value};
   }
+}
+
+// Common
+// TODO: Extract to Glue
+// -------------------------------------------------------------------------------------------------
+
+/**
+ *  Error thrown when an item is followed by an invalid value
+ *  @access private
+ */
+$pos-invalid-value-error: "Invalid Value Error";
+
+// These items are used in test only
+$pos-last-error: null;
+$pos-under-test: false;
+$pos-error-thrown: false;
+
+/**
+ * By default, this function will throw a Sass error, but allows errors to be stopped during testing,
+ * with the error saved to `$pos-last-error` instead so tests can check it was thrown.
+ *
+ * @param {String} $error
+ *  The name of the error
+ *
+ * @param {String} $message
+ *  The error message
+ *
+ * @returns {Map}
+ *  A map of offsets to be rendered as CSS properties
+ *
+ * @access private
+ */
+@function pos-throw-error($error, $message) {
+  @if $pos-under-test {
+    @if not $pos-error-thrown {
+      $pos-error-thrown: true !global;
+      $pos-last-error: $error !global;
+    }
+  } @else {
+    @error "#{$error} #{$message}";
+  }
+  @return null;
+}
+
+/**
+ * Overridable hook to handle unrecognised values. By default it will throw an error.
+ *
+ * @param {String} $value
+ *  An unrecognised value
+ *
+ * @param {orientation}
+ *  The orientation of the value's keyword (horizontal | vertical)
+ *
+ * @throws $pos-unsupported-value-error
+ *
+ * @access private
+ */
+@function pos-parse-value-filter($value, $orientation) {
+  @return pos-throw-error($pos-invalid-value-error, "Invalid value #{$value}");
+}
+
+/**
+ * Was the value a valid one; either united, supported unitless or calc
+ *
+ * @param {String} $value
+ *  The value to be checked
+ *
+ * @returns {Bool}
+ *  Was the value valid?
+ */
+@function pos-is-valid-value($value) {
+  @return pos-is-number-with-unit($value)
+       or pos-is-valid-unitless($value)
+       or pos-is-calc($value);
+}
+
+/**
+ * Determine if the value is a valid number with a unit
+ *
+ * @param {String} $value
+ *  Value to be checked
+ *
+ * @returns {Bool}
+ *  Was the value number with a unit?
+ *
+ * @access private
+ */
+@function pos-is-number-with-unit($value) {
+  @return (type-of($value) == number and not unitless($value));
+}
+
+/**
+ * Determine if the value is a valid unitless value.
+ *
+ * @param {String} $value
+ *  Value to be checked
+ *
+ * @returns {Bool}
+ *  Was the value unitless?
+ *
+ * @access private
+ */
+@function pos-is-valid-unitless($value) {
+  @return not not index($pos-valid-unitless-values, $value);
+}
+
+/**
+ * Determine if the value is a `calc()` expression.
+ *
+ * @param {String} $value
+ *  Value to be checked
+ *
+ * @returns {Bool}
+ *  Was the value a `calc` expression?
+ *
+ * @access private
+ */
+@function pos-is-calc($value) {
+ @return str-slice($value + "", 1, 4) == calc;
 }
