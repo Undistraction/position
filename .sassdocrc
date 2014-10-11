@@ -8,8 +8,8 @@
   "package": "./package.json",
 
   "groups": {
-    "undefined": "Private",
-    "api": "API"
+    "api": "API",
+    "support": "Support"
   },
 
   "theme": "default",
