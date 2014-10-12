@@ -95,7 +95,8 @@ module.exports = function(grunt) {
               "git checkout master ./docs",
               "git add -A",
               "git c -m 'docs: Update Docs to v<%= pkg.version %>'",
-              "git push origin gh-pages"
+              "git push origin gh-pages",
+              "git checkout master"
             ].join('&&')
         }
     },
