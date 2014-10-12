@@ -1,6 +1,6 @@
 # Position
 
-A set of mixins for handling position and offsets.
+Position is set of mixins for handling position and offsets.
 
 This project takes Hugo Giraudel's [mixin](http://hugogiraudel.com/2014/05/19/new-offsets-sass-mixin/) and adds some nice features including new keywords and support for custom units.
 
@@ -135,7 +135,7 @@ Renders:
 }
 ```
 
-## Fill keywords
+### Fill keywords
 
 Fill keywords set the offsets to zero. They cannot be used with values and are equivalent to using
 the offset keywords with a value of zero.
@@ -178,31 +178,47 @@ Renders:
 }
 ```
 
-## Using custom values
+### Using custom values
 
-Position includes a hook; a function called `pos-parse-value-filter` which is passed two parameters; a value and an orientation (either horizontal or vertical). This hook will be called
-when position comes across a value it doesn't know how to handle. By default this function throws
-an error, but you can override this function and implement custom handling.
+Where things get interesting is a function called `position-parse-value-filter`. This function is called when a value isn't recognised (it is an unknown, unitless value). By default it will throw an error, but by overriding this function (by declaring a function with the same name and signiture after you've imported position), you can process this value yourself.
 
-For example, if you want to use keywords to represent different sets of units to enforce consistancy, you could do this:
+For example, most projects are full hardcoded position-property declarations which quickly become inconsistant and ad-hoc. Why not enforce consistancy and improve readability on your projectby using a set of custom units:
 
 ```
+
+// Define a map of units
 $custom-units-map: (
+  hairline: 1px,
   single: 10px,
   double: 20px,
-  triple: 30px
+  triple: 30px,
+  quadruple: 40px,
+  half: 5px,
+  third: 3.33333333px,
+  quarter: 2,5px
 );
 
-@function pos-parse-value-filter($value, $orientation){
-  @if map-has-key($custom-units-map, $value) {
-    @return map-get($custom-units-map, $value);
+// Override
+@function position-parse-value-filter($key, $orientation){
+  @if map-has-key($custom-units-map, $key) {
+    @return map-get($custom-units-map, $key);
   } @else {
-    @return pos-throw-error($pos-invalid-value-error, "Invalid value #{$value}");
+    // If it isn't recognised throw an error
+    // Unfortunately Sass doesn't allow us to call super.
+    @return position-throw-error($position-invalid-value-error, "Invalid value #{$value}");
   }
 }
+
+// Then you can use
+
+.Example {
+  @include fixed(fill-h single top triple bottom third);
+}
+
 ```
 
-This feature will become very powerful when I add support for media queries.
+There is a lot more that you can do with this simple functionality. For example you could use unitless values in the `$custom-units-map` and multiply them with a vertical rhythm unit, or
+use breakpoint context to tweak these units across breakpoints, so that a declaration of `single` can mean different values at different breakpoints. *More examples coming soon.*
 
 ## Dependencies & Compatability
 
