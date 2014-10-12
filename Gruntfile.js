@@ -1,15 +1,11 @@
 module.exports = function(grunt) {
 
-  // Modules
-  grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-open');
-  grunt.loadNpmTasks('grunt-bump');
+  // Load all available grunt tasks
+  require('load-grunt-tasks')(grunt);
+  // Bootcamp doesn't use a `grunt-` prefix so load it manually
   grunt.loadNpmTasks('bootcamp');
-  grunt.loadNpmTasks('grunt-sassdoc');
 
-  // Grunt Tasks
+  // Configure tasks
   grunt.initConfig({
 
     dir : {
@@ -23,7 +19,7 @@ module.exports = function(grunt) {
     concat: {
       options: {
         separator: '\n\n',
-        banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n\n',
+        banner: '/*! <%= pkg.name %> v<%= pkg.version %> – <%= grunt.template.today("dd.mm.yyyy") %> */\n\n',
       },
       dist: {
         src: [
