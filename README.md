@@ -29,6 +29,8 @@ $ grunt test
 
 ## API
 
+You can play with the latest version in a Sassmeister gist [here](http://sassmeister.com/gist/7faa51b2facff9310309). Examples render below the docs.
+
 The main mixin takes the following form:
 
 - `position` is one of `absolute`, `fixed`, `relative` or static.
