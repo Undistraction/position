@@ -1,4 +1,4 @@
-/*! Position - v0.2.5 - 2014-10-11 */
+/*! Position v0.2.6 – 12.10.2014 */
 
 /**
  * @author Pedr Browne
@@ -443,23 +443,24 @@ $pos-error-thrown: false;
  *
  *  Values are evaluated LTR with later values overriding earlier values.
  *
- * @example scss - Usage
- *   .element {
- *     @include position(absolute, left top 10px);
- *   }
- *
- * @example css - CSS Output
- *   .element {
- *     position: absolute;
- *     left: 0;
- *     top: 10px;
- *   }
  *
  * @throws
  *  Argument Error
  *
  * @output
  *  Outputs the position property and any supplied offset properties
+ *
+ * @example scss - Usage
+ *  .element {
+ *    @include position(absolute, left top 10px);
+ *  }
+ *
+ * @example css - CSS Output
+ *  .element {
+ *    position: absolute;
+ *    left: 0;
+ *    top: 10px;
+ *  }
  */
 @mixin position($position, $args:null) {
 
