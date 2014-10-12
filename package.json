@@ -19,6 +19,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-open": "^0.2.3",
     "grunt-sassdoc": "^1.0.3",
+    "grunt-shell": "^1.1.1",
     "load-grunt-tasks": "^0.6.0"
   },
   "scripts": {
