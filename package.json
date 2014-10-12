@@ -1,7 +1,7 @@
 {
   "name": "Position",
   "title": "Position",
-  "version": "0.2.9",
+  "version": "0.2.10",
   "description": "Mixins for setting an elements position and offsets",
   "main": "dist/_position.scss",
   "directories": {
