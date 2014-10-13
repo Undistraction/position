@@ -29,7 +29,7 @@ $ grunt test
 
 ## API
 
-You can play with the latest version in a Sassmeister gist [here](http://sassmeister.com/gist/7faa51b2facff9310309). Examples render below the docs.
+You can play with the latest version in a Sassmeister gist [here](http://sassmeister.com/gist/cdf30d3c1be08ee66b38).
 
 The main mixin takes the following form:
 
