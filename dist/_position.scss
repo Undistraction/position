@@ -1,74 +1,56 @@
-/*! Position v0.2.10 – 12.10.2014 */
+/*! Position v0.2.11 – 13.10.2014 */
 
-/**
- * @author Pedr Browne
- * @access private
- * @group Support
- **/
+////
+/// @author Pedr Browne
+/// @access private
+/// @group Support
+////
 
 // Support
 // -------------------------------------------------------------------------------------------------
 
-/**
- * Values accepted for `position`.
- */
+/// Values accepted for `position`.
 $pos-accepted-position-values: fixed absolute relative static;
 
-/**
- * Keywords that are never followed by a value
- */
+/// Keywords that are never followed by a value
 $pos-always-valueless: fill fill-h fill-v;
 
-/**
- * Keywords that are always followed by a value
- */
+/// Keywords that are always followed by a value
+///
 $pos-always-value: offset offset-h offset-v all;
 
-/**
- * Keywords that are sometimes followed by a value
- */
+/// Keywords that are sometimes followed by a value
 $pos-support-valueless: left right top bottom;
 
-/**
- * All Keywords
- */
+/// All Keywords
 $pos-keywords: join($pos-support-valueless, join($pos-always-valueless, $pos-always-value));
 
-/**
- * Values without a unit that are accepted without being parsed
- */
+/// Values without a unit that are accepted without being parsed
 $pos-valid-unitless-values: auto initial inherit 0;
 
-/**
- * Error thrown when an item that needs a value has no following value
- */
+/// Error thrown when an item that needs a value has no following value
 $pos-missing-value-error: "Missing Value Error";
 
-/**
- * Error thrown when an item which doesn't support a value has a value following it
- */
+/// Error thrown when an item which doesn't support a value has a value following it
 $pos-unsupported-value-error: "Unsupported Value Error";
 
-/**
- * Error thrown when an unsupported keyword is used
- */
+/// Error thrown when an unsupported keyword is used
 $pos-invalid-keyword-error: "Invalid Keyword Error";
 
-/**
- * This is the workhorse function, taking a list of offset keywords and values and parsing them
- * to an object of offset values.
- *
- * @param {List} $args
- *  A list of offset keywords and values
- *
- * @returns {Map}
- *  A map of offsets to be rendered as CSS properties
- *
- * @throws $pos-unsupported-value-error
- * @throws $pos-invalid-value-error
- * @throws $pos-missing-value-error
- * @throws $pos-invalid-keyword-error
- */
+/// This is the workhorse function, taking a list of offset keywords and values and parsing them
+/// to an object of offset values.
+///
+/// @param {List} $args
+///  A list of offset keywords and values
+///
+/// @returns {Map}
+///  A map of offsets to be rendered as CSS properties
+///
+/// @throws $pos-unsupported-value-error
+/// @throws $pos-invalid-value-error
+/// @throws $pos-missing-value-error
+/// @throws $pos-invalid-keyword-error
+///
 @function pos-parse-offsets($args) {
 
   // Offsets acts as our model. We use the args to adjust its
@@ -165,44 +147,41 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   @return $non-null-offsets;
 }
 
-/**
- * Determine if the value is a valid value for position
- *
- * @param {String} $value
- *  Value to use for $position.
- *
- * @returns {Bool}
- *  Was the position valid?
- */
+/// Determine if the value is a valid value for position
+///
+/// @param {String} $value
+///  Value to use for $position.
+///
+/// @returns {Bool}
+///  Was the position valid?
+///
 @function pos-position-is-valid($value){
   @return not not index($pos-accepted-position-values, $value);
 }
 
-/**
- * Determine if the value is a supported keyword.
- *
- * @param {String} $value
- *  Item to be checked
- *
- * @returns {Bool}
- *  Was the item a supported keyword?
- */
+/// Determine if the value is a supported keyword.
+///
+/// @param {String} $value
+///  Item to be checked
+///
+/// @returns {Bool}
+///  Was the item a supported keyword?
+///
 @function pos-is-keyword($value) {
   @return not not index($pos-keywords, $value);
 }
 
-/**
- * Parse keyword that is always valueless to offset values.
- *
- * @param {Map} $offsets
- *  Map of offsets to adjust for the given keyword.
- *
- * @param {String} $item
- *  Offset keyword.
- *
- * @returns {Map}
- *  Adjusted Offsets
- */
+/// Parse keyword that is always valueless to offset values.
+///
+/// @param {Map} $offsets
+///  Map of offsets to adjust for the given keyword.
+///
+/// @param {String} $item
+///  Offset keyword.
+///
+/// @returns {Map}
+///  Adjusted Offsets
+///
 @function pos-parse-offsets-for-always-valueless($offsets, $item) {
   // Horizontal Fill
   @if $item == fill-h or $item == fill  {
@@ -223,20 +202,19 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   @return $offsets;
 }
 
-/**
- * Parse keyword that always has a value and its value to offset values.
- *
- * @param {Map} $offsets
- *  Map of offsets to adjust for the given keyword and value.
- *
- * @param {String} $item
- *  Offset keyword.
- *
- * @param {String} $item Offset value.
- *
- * @returns {Map}
- *  Adjusted Offsets
- */
+/// Parse keyword that always has a value and its value to offset values.
+///
+/// @param {Map} $offsets
+///  Map of offsets to adjust for the given keyword and value.
+///
+/// @param {String} $item
+///  Offset keyword.
+///
+/// @param {String} $item Offset value.
+///
+/// @returns {Map}
+///  Adjusted Offsets
+///
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
 
   // Do we need to parse each value?
@@ -269,15 +247,14 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   @return $offsets;
 }
 
-/**
- * Get the orientation for a valueless keyword
- *
- * @param {String} $item
- *  An item from $pos-support-valueless list
- *
- * @returns {String}
- *  The keyword's orientation (vertical | horizontal)
- */
+/// Get the orientation for a valueless keyword
+///
+/// @param {String} $item
+///  An item from $pos-support-valueless list
+///
+/// @returns {String}
+///  The keyword's orientation (vertical | horizontal)
+///
 @function pos-orientation-for-support-valueless($item) {
   @if $item == left or $item == right {
     @return horizontal;
@@ -286,15 +263,14 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   }
 }
 
-/**
- * Render offsets to CSS properties.
- *
- * @param {String} $position
- *  The position - One of absolute | fixed | relative | static
- *.
- * @param {List} $args
- *  A map of offset keywords and values.
- */
+/// Render offsets to CSS properties.
+///
+/// @param {String} $position
+///  The position - One of absolute | fixed | relative | static
+///.
+/// @param {List} $args
+///  A map of offset keywords and values.
+///
 @mixin pos-render($position, $offsets) {
   // Render position
   position: $position;
@@ -309,9 +285,8 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
 // TODO: Extract to Glue
 // -------------------------------------------------------------------------------------------------
 
-/**
- *  Error thrown when an item is followed by an invalid value
- */
+///  Error thrown when an item is followed by an invalid value
+///
 $pos-invalid-value-error: "Invalid Value Error";
 
 // These items are used in test only
@@ -319,19 +294,18 @@ $pos-last-error: null;
 $pos-under-test: false;
 $pos-error-thrown: false;
 
-/**
- * By default, this function will throw a Sass error, but allows errors to be stopped during testing,
- * with the error saved to `$pos-last-error` instead so tests can check it was thrown.
- *
- * @param {String} $error
- *  The name of the error
- *
- * @param {String} $message
- *  The error message
- *
- * @returns {Map}
- *  A map of offsets to be rendered as CSS properties
- */
+/// By default, this function will throw a Sass error, but allows errors to be stopped during testing,
+/// with the error saved to `$pos-last-error` instead so tests can check it was thrown.
+///
+/// @param {String} $error
+///  The name of the error
+///
+/// @param {String} $message
+///  The error message
+///
+/// @returns {Map}
+///  A map of offsets to be rendered as CSS properties
+///
 @function pos-throw-error($error, $message) {
   @if $pos-under-test {
     @if not $pos-error-thrown {
@@ -344,124 +318,118 @@ $pos-error-thrown: false;
   @return null;
 }
 
-/**
- * Overridable hook to handle unrecognised values. By default it will throw an error.
- *
- * @param {String} $value
- *  An unrecognised value
- *
- * @param {orientation}
- *  The orientation of the value's keyword (horizontal | vertical)
- *
- * @throws $pos-unsupported-value-error
- */
+/// Overridable hook to handle unrecognised values. By default it will throw an error.
+///
+/// @param {String} $value
+///  An unrecognised value
+///
+/// @param {orientation}
+///  The orientation of the value's keyword (horizontal | vertical)
+///
+/// @throws $pos-unsupported-value-error
+///
 @function pos-parse-value-filter($value, $orientation) {
   @return pos-throw-error($pos-invalid-value-error, "Invalid value #{$value}");
 }
 
-/**
- * Was the value a valid one; either united, supported unitless or calc
- *
- * @param {String} $value
- *  The value to be checked
- *
- * @returns {Bool}
- *  Was the value valid?
- */
+/// Was the value a valid one; either united, supported unitless or calc
+///
+/// @param {String} $value
+///  The value to be checked
+///
+/// @returns {Bool}
+///  Was the value valid?
+///
 @function pos-is-valid-value($value) {
   @return pos-is-number-with-unit($value)
        or pos-is-valid-unitless($value)
        or pos-is-calc($value);
 }
 
-/**
- * Determine if the value is a valid number with a unit
- *
- * @param {String} $value
- *  Value to be checked
- *
- * @returns {Bool}
- *  Was the value number with a unit?
- */
+/// Determine if the value is a valid number with a unit
+///
+/// @param {String} $value
+///  Value to be checked
+///
+/// @returns {Bool}
+///  Was the value number with a unit?
+///
 @function pos-is-number-with-unit($value) {
   @return (type-of($value) == number and not unitless($value));
 }
 
-/**
- * Determine if the value is a valid unitless value.
- *
- * @param {String} $value
- *  Value to be checked
- *
- * @returns {Bool}
- *  Was the value unitless?
- */
+/// Determine if the value is a valid unitless value.
+///
+/// @param {String} $value
+///  Value to be checked
+///
+/// @returns {Bool}
+///  Was the value unitless?
+///
 @function pos-is-valid-unitless($value) {
   @return not not index($pos-valid-unitless-values, $value);
 }
 
-/**
- * Determine if the value is a `calc()` expression.
- *
- * @param {String} $value
- *  Value to be checked
- *
- * @returns {Bool}
- *  Was the value a `calc` expression?
- */
+/// Determine if the value is a `calc()` expression.
+///
+/// @param {String} $value
+///  Value to be checked
+///
+/// @returns {Bool}
+///  Was the value a `calc` expression?
+///
 @function pos-is-calc($value) {
  @return str-slice($value + "", 1, 4) == calc;
 }
 
-/**
- * @author Pedr Browne
- * @access public
- * @group API
- **/
+////
+/// @author Pedr Browne
+/// @access public
+/// @group API
+////
 
 // API
 // -------------------------------------------------------------------------------------------------
 
-/**
- * @param {String} $position
- *  One of absolute | relative | fixed
- *
- * @param {List} $args (())
- *  A list of offset keywords and values. Some keywords require a following value, some do not
- *  accept a following value, and for some the value is optional. The possible values are:
- *
- *  - `top`, `bottom`, `left`, and `right` If one of these keywords is followed by a value, the
- *    offset will be set to that value. If no value follows, the offset will be set to zero.
- *  - `offset | all | offset-h | offset-v` All these values require a value. `offset` and `all`
- *    (which is just an alias of `offset`) will set all four offsets ('top', 'bottom', 'left'
- *    and `right`) to the following value. `offset-h` will set the `left` and `right` offsets to the
- *    following value, and `offset-v` will set the `top` and `bottom` offsets to the following
- *    value.
- *  - `fill`, `fill-h` and `fill-v` do not take a following value. `fill` will set all offsets to
- *    zero. `fill-h` will set the `left` and `right` offsets to zero, and `fill-v` will set the
- *    `top` and `bottom` offsets to zero.
- *
- *  Values are evaluated LTR with later values overriding earlier values.
- *
- *
- * @throws
- *  Argument Error
- *
- * @output
- *  Outputs the position property and any supplied offset properties
- *
- * @example scss - Usage
- *  .element {
- *    @include position(absolute, left top 10px);
- *  }
- *
- * @example css - CSS Output
- *  .element {
- *    position: absolute;
- *    left: 0;
- *    top: 10px;
- *  }
- */
+/// @param {String} $position
+///  One of absolute | relative | fixed
+///
+/// @param {List} $args (())
+///  A list of offset keywords and values. Some keywords require a following value, some do not
+///  accept a following value, and for some the value is optional. The possible values are:
+///
+///  - `top`, `bottom`, `left`, and `right` If one of these keywords is followed by a value, the
+///    offset will be set to that value. If no value follows, the offset will be set to zero.
+///  - `offset | all | offset-h | offset-v` All these values require a value. `offset` and `all`
+///    (which is just an alias of `offset`) will set all four offsets ('top', 'bottom', 'left'
+///    and `right`) to the following value. `offset-h` will set the `left` and `right` offsets to the
+///    following value, and `offset-v` will set the `top` and `bottom` offsets to the following
+///    value.
+///  - `fill`, `fill-h` and `fill-v` do not take a following value. `fill` will set all offsets to
+///    zero. `fill-h` will set the `left` and `right` offsets to zero, and `fill-v` will set the
+///    `top` and `bottom` offsets to zero.
+///
+///  Values are evaluated LTR with later values overriding earlier values.
+///
+///
+/// @throws
+///  Argument Error
+///
+/// @output
+///  Outputs the position property and any supplied offset properties
+///
+/// @example scss - Usage
+///  .element {
+///    @include position(absolute, left top 10px);
+///  }
+///
+/// @example css - CSS Output
+///  .element {
+///    position: absolute;
+///    left: 0;
+///    top: 10px;
+///  }
+///
 @mixin position($position, $args:null) {
 
   $offsets: ();
@@ -479,60 +447,54 @@ $pos-error-thrown: false;
   @include pos-render($position, $offsets);
 }
 
-// Shorthand Mixins
-
-/**
- * Shorthand for `@include position(absolute, args)`.
- *
- * @param {List} $args
- *  A list of offset keywords and values.
- *
- * @output
- *  Outputs the position property and any given offset properties
- *
- * @see {mixin} position
- */
+/// Shorthand for `@include position(absolute, args)`.
+///
+/// @param {List} $args
+///  A list of offset keywords and values.
+///
+/// @output
+///  Outputs the position property and any given offset properties
+///
+/// @see {mixin} position
+///
 @mixin absolute($args: ()) {
   @include position(absolute, $args);
 }
 
-/**
- * Shorthand for `@include position(absolute, args)`.
- *
- * @param {List} $args
- *  A list of offset keywords and values.
- *
- * @output
- *  Outputs the position property and any given offset properties
- *
- * @see {mixin} position
- */
+/// Shorthand for `@include position(absolute, args)`.
+///
+/// @param {List} $args
+///  A list of offset keywords and values.
+///
+/// @output
+///  Outputs the position property and any given offset properties
+///
+/// @see {mixin} position
+///
 @mixin fixed($args: ()) {
   @include position(fixed, $args);
 }
 
-/**
- * Shorthand for `@include position(absolute, args)`.
- *
- * @param {List} $args
- *  A list of offset keywords and values.
- *
- * @output
- *  Outputs the position property and any given offset properties
- *
- * @see {mixin} position
- */
+/// Shorthand for `@include position(absolute, args)`.
+///
+/// @param {List} $args
+///  A list of offset keywords and values.
+///
+/// @output
+///  Outputs the position property and any given offset properties
+///
+/// @see {mixin} position
+///
 @mixin relative($args: ()) {
   @include position(relative, $args);
 }
 
-/**
- * Shorthand for `@include position(static)`.
- *
- * @output Outputs the position property
- *
- * @see {mixin} position
- */
+/// Shorthand for `@include position(static)`.
+///
+/// @output Outputs the position property
+///
+/// @see {mixin} position
+///
 @mixin static() {
   @include position(relative, $args);
 }
