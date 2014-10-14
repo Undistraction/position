@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   // Load all available grunt tasks
-  require('load-grunt-tasks')(grunt);
+  require('load-grunt-tasks')(grunt,'bootcamp');
   // Bootcamp doesn't use a `grunt-` prefix so load it manually
   grunt.loadNpmTasks('bootcamp');
 
@@ -14,19 +14,20 @@ module.exports = function(grunt) {
     },
 
     pkg: grunt.file.readJSON('package.json'),
+    projectName: '<%= pkg.name.toLowerCase() %>',
 
     // Concat
     concat: {
       options: {
         separator: '\n\n',
-        banner: '/*! <%= pkg.name %> v<%= pkg.version %> – <%= grunt.template.today("dd.mm.yyyy") %> */\n\n',
+        banner: '/*! <%= projectName %> v<%= pkg.version %> – <%= grunt.template.today("dd.mm.yyyy") %> */\n\n',
       },
       dist: {
         src: [
-          '<%= dir.src %>/position/_support.scss',
-          '<%= dir.src %>/position/_api.scss'
+          '<%= dir.src %>/<%= projectName %>/_support.scss',
+          '<%= dir.src %>/<%= projectName %>/_api.scss'
         ],
-        dest: '<%= dir.dist %>/_<%= pkg.name.toLowerCase() %>.scss',
+        dest: '<%= dir.dist %>/_<%= projectName %>.scss',
       },
     },
 
@@ -118,10 +119,9 @@ module.exports = function(grunt) {
         globalReplace: false
       }
     }
-
   });
 
-  // Tasks
+  // Define own tasks
   grunt.registerTask('test', ['sass', 'bootcamp']);
   grunt.registerTask('dev', ['test', 'watch']);
   grunt.registerTask('build', ['test', 'sassdoc', 'concat']);
