@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
   // Load all available grunt tasks
-  require('load-grunt-tasks')(grunt,'bootcamp');
+  require('load-grunt-tasks')(grunt);
   // Bootcamp doesn't use a `grunt-` prefix so load it manually
   grunt.loadNpmTasks('bootcamp');
 
