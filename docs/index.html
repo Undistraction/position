@@ -8,7 +8,7 @@
   
   <meta charset="utf-8" />
 
-<title>Position - v0.2.12</title>
+<title>Position - v0.2.13</title>
 <link rel="stylesheet" href="assets/css/main.css" />
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
 <meta name="viewport" content="width=device-width">
@@ -26,7 +26,7 @@
   <div class="sidebar__header">
   <h1 class="sidebar__title">
     
-      <a href="https://github.com/Undistraction/Position">Position - v0.2.12</a>
+      <a href="https://github.com/Undistraction/Position">Position - v0.2.13</a>
     
   </h1>
 </div>
@@ -1335,7 +1335,7 @@ to an object of offset values.</p>
   @if $item == offset-v or $item == offset or $item == all {
 
     @if $parse-value {
-      $value: pos-parse-value-filter($next-item, vertical);
+      $value: pos-parse-value-filter($value, vertical);
     }
 
     $offsets: map-merge($offsets, (
@@ -4993,7 +4993,7 @@ zero. <code>fill-h</code> will set the <code>left</code> and <code>right</code> 
           
 
           <!-- Version -->
-          <span class="project-info__version"> - v0.2.12</span>
+          <span class="project-info__version"> - v0.2.13</span>
 
           <!-- License -->
           

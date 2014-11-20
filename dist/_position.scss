@@ -1,4 +1,4 @@
-/*! Position v0.2.12 – 13.10.2014 */
+/*! position v0.2.13 – 20.11.2014 */
 
 ////
 /// @author Pedr Browne
@@ -235,7 +235,7 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   @if $item == offset-v or $item == offset or $item == all {
 
     @if $parse-value {
-      $value: pos-parse-value-filter($next-item, vertical);
+      $value: pos-parse-value-filter($value, vertical);
     }
 
     $offsets: map-merge($offsets, (
