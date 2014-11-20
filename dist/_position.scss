@@ -1,4 +1,4 @@
-/*! position v0.2.13 – 20.11.2014 */
+/*! position v0.2.14 – 20.11.2014 */
 
 ////
 /// @author Pedr Browne
@@ -216,31 +216,33 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
 ///  Adjusted Offsets
 ///
 @function pos-parse-offsets-for-always-value($offsets, $item, $value) {
-
   // Do we need to parse each value?
-  $parse-value: not pos-is-valid-value($value);
+  $should-parse-value: not pos-is-valid-value($value);
+  // Separate values so we can parse independently by orientation if needed
+  $value-h: $value;
+  $value-v: $value;
 
   @if $item == offset-h or $item == offset or $item == all {
 
-    @if $parse-value {
-      $value: pos-parse-value-filter($value, horizontal);
+    @if $should-parse-value {
+      $value-h: pos-parse-value-filter($value, horizontal);
     }
 
     $offsets: map-merge($offsets, (
-      left: $value,
-      right: $value
+      left: $value-h,
+      right: $value-h
     ));
   }
 
   @if $item == offset-v or $item == offset or $item == all {
 
-    @if $parse-value {
-      $value: pos-parse-value-filter($value, vertical);
+    @if $should-parse-value {
+      $value-v: pos-parse-value-filter($value, vertical);
     }
 
     $offsets: map-merge($offsets, (
-      top: $value,
-      bottom: $value
+      top: $value-v,
+      bottom: $value-v
     ));
   }
 
