@@ -233,7 +233,7 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   @if $item == offset-v or $item == offset or $item == all {
 
     @if $parse-value {
-      $value: pos-parse-value-filter($next-item, vertical);
+      $value: pos-parse-value-filter($value, vertical);
     }
 
     $offsets: map-merge($offsets, (
