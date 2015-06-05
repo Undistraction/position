@@ -8,7 +8,7 @@
   
   <meta charset="utf-8" />
 
-<title>Position - v0.2.14</title>
+<title>Position - v0.2.15</title>
 <link rel="stylesheet" href="assets/css/main.css" />
 <link href='http://fonts.googleapis.com/css?family=Roboto:400,500,700' rel='stylesheet' type='text/css'>
 <meta name="viewport" content="width=device-width">
@@ -26,7 +26,7 @@
   <div class="sidebar__header">
   <h1 class="sidebar__title">
     
-      <a href="https://github.com/Undistraction/Position">Position - v0.2.14</a>
+      <a href="https://github.com/Undistraction/Position">Position - v0.2.15</a>
     
   </h1>
 </div>
@@ -520,8 +520,6 @@
           }
 
           $value: $next-item;
-        } @else {
-          $error: pos-throw-error( $pos-invalid-value-error, &quot;`#{$item}` was followed by an invalid value; `{$value}`&quot;);
         }
 
         $offsets: map-merge($offsets, ($item: $value));
@@ -548,7 +546,7 @@
     data-collapsed="@function pos-parse-offsets($args) { ... }"><code>@function pos-parse-offsets($args) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L52-L146" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L52-L144" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -740,7 +738,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-position-is-valid($value) { ... }"><code>@function pos-position-is-valid($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L156-L158" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L154-L156" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -913,7 +911,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-is-keyword($value) { ... }"><code>@function pos-is-keyword($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L168-L170" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L166-L168" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1112,7 +1110,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-parse-offsets-for-always-valueless($offsets, $item) { ... }"><code>@function pos-parse-offsets-for-always-valueless($offsets, $item) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L183-L201" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L181-L199" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1351,7 +1349,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-parse-offsets-for-always-value($offsets, $item, $item) { ... }"><code>@function pos-parse-offsets-for-always-value($offsets, $item, $item) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L216-L248" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L214-L246" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1560,7 +1558,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-orientation-for-support-valueless($item) { ... }"><code>@function pos-orientation-for-support-valueless($item) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L258-L264" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L256-L262" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1751,7 +1749,7 @@ to an object of offset values.</p>
     data-collapsed="@function pos-throw-error($error, $message) { ... }"><code>@function pos-throw-error($error, $message) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L309-L319" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L307-L317" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -1951,7 +1949,7 @@ with the error saved to <code>$pos-last-error</code> instead so tests can check 
     data-collapsed="@function pos-parse-value-filter($value, $The) { ... }"><code>@function pos-parse-value-filter($value, $The) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L331-L333" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L329-L331" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -2142,7 +2140,7 @@ with the error saved to <code>$pos-last-error</code> instead so tests can check 
     data-collapsed="@function pos-is-valid-value($value) { ... }"><code>@function pos-is-valid-value($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L343-L347" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L341-L345" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -2315,7 +2313,7 @@ with the error saved to <code>$pos-last-error</code> instead so tests can check 
     data-collapsed="@function pos-is-number-with-unit($value) { ... }"><code>@function pos-is-number-with-unit($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L357-L359" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L355-L357" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -2488,7 +2486,7 @@ with the error saved to <code>$pos-last-error</code> instead so tests can check 
     data-collapsed="@function pos-is-valid-unitless($value) { ... }"><code>@function pos-is-valid-unitless($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L369-L371" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L367-L369" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -2661,7 +2659,7 @@ with the error saved to <code>$pos-last-error</code> instead so tests can check 
     data-collapsed="@function pos-is-calc($value) { ... }"><code>@function pos-is-calc($value) { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L381-L383" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L379-L381" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -2844,7 +2842,7 @@ with the error saved to <code>$pos-last-error</code> instead so tests can check 
     data-collapsed="@mixin pos-render() { ... }"><code>@mixin pos-render() { ... }</code></pre>
 
   
-    <a href="https://github.com/Undistraction/position/position/_support.scss#L274-L282" class="item__source-link" target="_blank">View source</a>
+    <a href="https://github.com/Undistraction/position/position/_support.scss#L272-L280" class="item__source-link" target="_blank">View source</a>
   
 </div>
 
@@ -4995,7 +4993,7 @@ zero. <code>fill-h</code> will set the <code>left</code> and <code>right</code> 
           
 
           <!-- Version -->
-          <span class="project-info__version"> - v0.2.14</span>
+          <span class="project-info__version"> - v0.2.15</span>
 
           <!-- License -->
           

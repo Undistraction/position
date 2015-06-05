@@ -1,4 +1,4 @@
-/*! position v0.2.14 – 20.11.2014 */
+/*! position v0.2.15 – 05.06.2015 */
 
 ////
 /// @author Pedr Browne
@@ -121,8 +121,6 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
           }
 
           $value: $next-item;
-        } @else {
-          $error: pos-throw-error( $pos-invalid-value-error, "`#{$item}` was followed by an invalid value; `{$value}`");
         }
 
         $offsets: map-merge($offsets, ($item: $value));
