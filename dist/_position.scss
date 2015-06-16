@@ -1,4 +1,4 @@
-/*! position v0.2.15 – 05.06.2015 */
+/*! position v0.2.16 – 16.06.2015 */
 
 ////
 /// @author Pedr Browne
@@ -496,5 +496,5 @@ $pos-error-thrown: false;
 /// @see {mixin} position
 ///
 @mixin static() {
-  @include position(relative, $args);
+  @include position(relative);
 }
