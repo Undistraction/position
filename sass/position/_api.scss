@@ -112,5 +112,5 @@
 /// @see {mixin} position
 ///
 @mixin static() {
-  @include position(relative, $args);
+  @include position(relative);
 }
