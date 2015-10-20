@@ -115,7 +115,7 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
 
           @if not pos-is-valid-value($next-item) {
             $orientation: pos-orientation-for-support-valueless($item);
-            $next-item: pos-parse-value-filter($next-item, $orientation)
+            $next-item: pos-parse-value($next-item, $orientation)
           }
 
           $value: $next-item;
@@ -141,6 +141,22 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   }
 
   @return $non-null-offsets;
+}
+
+/// Determine whether to use default or user-supplied parsing
+///
+/// @param {String} $value
+///  Value to use for $position.
+///
+/// @returns {Bool}
+///  Was the position valid?
+///
+@function pos-parse-value($value, $orientation) {
+  @if function-exists(pos-parse-value-filter) {
+    @return pos-parse-value-filter($value, $orientation);
+  }@else {
+    @return pos-default-parse-value-filter($value, $orientation);
+  }
 }
 
 /// Determine if the value is a valid value for position
@@ -221,7 +237,7 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   @if $item == offset-h or $item == offset or $item == all {
 
     @if $should-parse-value {
-      $value-h: pos-parse-value-filter($value, horizontal);
+      $value-h: pos-parse-value($value, horizontal);
     }
 
     $offsets: map-merge($offsets, (
@@ -233,7 +249,7 @@ $pos-invalid-keyword-error: "Invalid Keyword Error";
   @if $item == offset-v or $item == offset or $item == all {
 
     @if $should-parse-value {
-      $value-v: pos-parse-value-filter($value, vertical);
+      $value-v: pos-parse-value($value, vertical);
     }
 
     $offsets: map-merge($offsets, (
@@ -326,7 +342,7 @@ $pos-error-thrown: false;
 ///
 /// @throws $pos-unsupported-value-error
 ///
-@function pos-parse-value-filter($value, $orientation) {
+@function pos-default-parse-value-filter($value, $orientation) {
   @return pos-throw-error($pos-invalid-value-error, "Invalid value #{$value}");
 }
 
