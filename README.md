@@ -182,7 +182,7 @@ Renders:
 
 ### Using custom values
 
-Where things get interesting is a function called `position-parse-value-filter`. This function is called when a value isn't recognised (it is an unknown, unitless value). By default it will throw an error, but by overriding this function (by declaring a function with the same name and signiture after you've imported position), you can process this value yourself.
+Where things get interesting is the ability to define a function called `position-parse-value-filter`. If this function is defined it is called when a value isn't recognised (it is an unknown, unitless value). This means you can process this value yourself.
 
 For example, most projects are full hardcoded position-property declarations which quickly become inconsistant and ad-hoc. Why not enforce consistancy and improve readability on your projectby using a set of custom units:
 
@@ -218,6 +218,8 @@ $custom-units-map: (
 }
 
 ```
+
+*Note this API has changed since version 0.2.18. In version 0.2.18 you overrode the 'pos-parse-value-filter' function, but now you are no longer overriding the default handling. Apart from being less opaque, this means that you can define this function before or after you import box.
 
 There is a lot more that you can do with this simple functionality. For example you could use unitless values in the `$custom-units-map` and multiply them with a vertical rhythm unit, or
 use breakpoint context to tweak these units across breakpoints, so that a declaration of `single` can mean different values at different breakpoints. *More examples coming soon.*
